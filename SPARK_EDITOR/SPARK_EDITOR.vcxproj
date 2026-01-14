@@ -71,11 +71,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir).\Dependencies\SDL\include;$(SolutionDir).\GLAD\glad\include;$(SolutionDir).\SPARK_UTILITES;$(SolutionDir).\SPARK_WINDOW;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir).\Dependencies\SDL\include;$(SolutionDir).\GLAD\glad\include;$(SolutionDir).\SPARK_UTILITES;$(SolutionDir).\SPARK_WINDOW;$(SolutionDir).\SOIL\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir).\Dependencies\SDL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir).\Dependencies\SDL\include;$(SolutionDir).\GLAD\glad\include;$(SolutionDir).\SPARK_UTILITES;$(SolutionDir).\SPARK_WINDOW;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir).\Dependencies\SDL\include;$(SolutionDir).\GLAD\glad\include;$(SolutionDir).\SPARK_UTILITES;$(SolutionDir).\SPARK_WINDOW;$(SolutionDir).\SOIL\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir).\Dependencies\SDL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -140,6 +140,9 @@
   <ItemGroup>
     <ProjectReference Include="..\GLAD\GLAD.vcxproj">
       <Project>{ac0814d3-d824-4488-9ee2-dcae3e7c8b22}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\SOIL\SOIL.vcxproj">
+      <Project>{a8be8343-fc76-431e-ab7f-71c3485b3e44}</Project>
     </ProjectReference>
     <ProjectReference Include="..\SPARK_UTILITES\SPARK_UTILITES.vcxproj">
       <Project>{3b3a0eff-7ece-4c5a-96e1-8ee6f3db5994}</Project>

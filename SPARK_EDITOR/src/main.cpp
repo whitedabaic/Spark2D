@@ -3,6 +3,76 @@
 #include <SDL.h>
 #include <glad/glad.h>
 #include <iostream>
+#include <SOIL/SOIL.h>
+
+bool LoadTexture(const std::string& filepath, int& width, int& height, bool blended)
+{
+	int channels = 0;
+
+	unsigned char* image = SOIL_load_image(
+		filepath.c_str(),					// 文件名
+		&width,								// 图像宽度
+		&height,							// 图像高度
+		&channels,							// 图像通道数
+		SOIL_LOAD_AUTO						// 加载模式
+	);
+
+	// Check if the image was loaded successfully
+	if (!image)
+	{
+		std::cout << "Failed to load image: " << SOIL_last_result() << std::endl;
+		return false;
+	}
+
+	GLint format = GL_RGBA;
+
+	switch (channels)
+	{
+		case 1:
+			format = GL_RED;
+			break;
+		case 3:
+			format = GL_RGB;
+			break;
+		case 4:
+			format = GL_RGBA;
+			break;
+		default:
+			format = GL_RGBA;
+			break;
+	}
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	if (!blended)
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	}
+	else
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	}
+
+	glTexImage2D(
+		GL_TEXTURE_2D,			// 目标纹理类型
+		0,						// 细节级别
+		format,					// 纹理内部格式
+		width,					// 纹理宽度
+		height,					// 纹理高度
+		0,						// 边框宽度
+		format,					// 源图像格式
+		GL_UNSIGNED_BYTE,		// 源图像数据类型
+		image					// 图像数据
+	);
+
+	// Delete the image data after generating the texture
+	SOIL_free_image_data(image);
+
+	return true;
+}
 
 int main() 
 {
@@ -73,34 +143,55 @@ int main()
 		return -1;
 	}
 
-	// Create temp vertex data
-	//float vertices[] = {
-	//	 0.0f,  0.5f, 0.0f,
-	//	 -0.5f, -0.5f, 0.0f,
-	//	 0.5f, -0.5f, 0.0f,
-	//};
+	// Temporarily load a texture
+	// First create the texture ID and gen/bind the texture
+	GLuint texID;
+	glGenTextures(1, &texID);
+	glBindTexture(GL_TEXTURE_2D, texID);
+
+	// create width and height for the texture
+	int width{ 0 }, height{ 0 };
+
+	// Now we can load the texture
+	if (!LoadTexture("assets/textures/castle.png", width,  height, false))
+	{
+		std::cout << "Failed to load texture!" << std::endl;
+		return -1;
+	}
 
 	// Create vertices for a Quad
+	//float vertices[] =
+	//{
+	//	 0.5f,  0.5f,  0.0f, 0.0f, 1.0f,
+	//	 0.5f,  -0.5f, 0.0f, 1.0f, 1.0f,
+	//	 -0.5f, 0.5f,  0.0f, 1.0f, 0.0f,
+	//	 -0.5f, -0.5f, 0.0f, 0.0f, 0.0f
+	//};
+
+	// Swapped tex coords
 	float vertices[] =
 	{
-		 0.5f, 0.5f, 0.0f,
-		 0.5f, -0.5f, 0.0f,
-		 -0.5f, 0.5f, 0.0f,
-		 -0.5f, -0.5f, 0.0f,
+		 -0.5f,  0.5f,  0.0f, 0.0f, 0.0f,
+		  0.5f,  0.5f,  0.0f, 1.0f, 0.0f,
+		  0.5f, -0.5f,  0.0f, 1.0f, 1.0f,
+		 -0.5f, -0.5f,  0.0f, 0.0f, 1.0f
 	};
 
 	GLuint indices[] =
 	{
-		0, 1, 3,
+		0, 1, 2,
 		2, 3, 0
 	};
 	// Create a temp vertex source
 	const char* vertexSource = R"(
 		#version 460 core
 		layout(location = 0) in vec3 aPosition;
+		layout(location = 1) in vec2 aTexCoords;
+		out vec2 fragUVs;
 		void main()
 		{
 			gl_Position = vec4(aPosition, 1.0);
+			fragUVs = aTexCoords;
 		}
 	)";
 
@@ -129,10 +220,12 @@ int main()
 	// Create a temp fragment shader
 	const char* fragmentSource = R"(
 		#version 460 core
+		in vec2 fragUVs;
 		out vec4 color;
+		uniform sampler2D uTexture;
 		void main()
 		{
-			color = vec4(1.0f, 0.0f, 1.0, 1.0);
+			color = texture(uTexture, fragUVs);
 		}
 	)";
 
@@ -221,11 +314,22 @@ int main()
 		3,					// 属性大小
 		GL_FLOAT,			// 属性类型
 		GL_FALSE,			// 是否标准化
-		3 * sizeof(float),	// 步长
+		5 * sizeof(float),	// 步长
 		(void*)0			// 偏移量
 	);
 
 	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(
+		1,									// 属性位置
+		2,									// 属性大小
+		GL_FLOAT,							// 属性类型
+		GL_FALSE,							// 是否标准化
+		5 * sizeof(float),					// 步长
+		reinterpret_cast<void*>(3 * sizeof(float))			// 偏移量
+	);
+
+	glEnableVertexAttribArray(1);
 
 	glBindVertexArray(0);
 
@@ -265,7 +369,9 @@ int main()
 		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
 
-		//glDrawArrays(GL_TRIANGLES, 0, 6);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, texID);
+
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
 		glBindVertexArray(0);
