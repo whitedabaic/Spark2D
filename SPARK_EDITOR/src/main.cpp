@@ -73,6 +73,162 @@ int main()
 		return -1;
 	}
 
+	// Create temp vertex data
+	//float vertices[] = {
+	//	 0.0f,  0.5f, 0.0f,
+	//	 -0.5f, -0.5f, 0.0f,
+	//	 0.5f, -0.5f, 0.0f,
+	//};
+
+	// Create vertices for a Quad
+	float vertices[] =
+	{
+		 0.5f, 0.5f, 0.0f,
+		 0.5f, -0.5f, 0.0f,
+		 -0.5f, 0.5f, 0.0f,
+		 -0.5f, -0.5f, 0.0f,
+	};
+
+	GLuint indices[] =
+	{
+		0, 1, 3,
+		2, 3, 0
+	};
+	// Create a temp vertex source
+	const char* vertexSource = R"(
+		#version 460 core
+		layout(location = 0) in vec3 aPosition;
+		void main()
+		{
+			gl_Position = vec4(aPosition, 1.0);
+		}
+	)";
+
+	// Create the shader
+	GLuint vertexShader;
+	vertexShader = glCreateShader(GL_VERTEX_SHADER);
+
+	// Add the vertex shader source
+	glShaderSource(vertexShader, 1, &vertexSource, NULL);
+
+	// Compile the vertex shader
+	glCompileShader(vertexShader);
+
+	// Get the compilation status
+	int status;
+	glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &status);
+
+	if (!status)
+	{
+		char infoLog[512];
+		glGetShaderInfoLog(vertexShader, 512, NULL, infoLog);
+		std::cout << "Failed to compile vertex shader\n" << infoLog << std::endl;
+		return -1;
+	}
+
+	// Create a temp fragment shader
+	const char* fragmentSource = R"(
+		#version 460 core
+		out vec4 color;
+		void main()
+		{
+			color = vec4(1.0f, 0.0f, 1.0, 1.0);
+		}
+	)";
+
+	// Create the shader
+	GLuint fragmentShader;
+	fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+	// Add the fragment shader source
+	glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
+
+	// Compile the fragment shader
+	glCompileShader(fragmentShader);
+
+	// Get the compilation status
+	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &status);
+
+	if (!status)
+	{
+		char infoLog[512];
+		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
+		std::cout << "Failed to compile fragment shader\n" << infoLog << std::endl;
+		return -1;
+	}
+
+	// Create the shader program
+	GLuint shaderProgram;
+	shaderProgram = glCreateProgram();
+
+	// Attach the above shaders to the program
+	glAttachShader(shaderProgram, vertexShader);
+	glAttachShader(shaderProgram, fragmentShader);
+
+	// Now we want to link the shader program
+	glLinkProgram(shaderProgram);
+
+	// Check the link status
+	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &status);
+
+	if (!status)
+	{
+		char infoLog[512];
+		glGetShaderInfoLog(shaderProgram, 512, NULL, infoLog);
+		std::cout << "Failed to link shader program!\n" << infoLog << std::endl;
+		return -1;
+	}
+
+	// Now we can enable the shader program
+	glUseProgram(shaderProgram);
+
+	// Once the program is created and linked, we can delete the shaders
+	glDeleteBuffers(1, &vertexShader);
+	glDeleteBuffers(1, &fragmentShader);
+
+	// Now we will have to create the vertex array object and vertex buffer object
+	GLuint VAO, VBO, IBO;
+
+	// Let's generate VAO
+	glGenVertexArrays(1, &VAO);
+
+	// Generate VBO
+	glGenBuffers(1, &VBO);
+
+	// Bind the VAO and VBO
+	glBindVertexArray(VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+	glBufferData(
+		GL_ARRAY_BUFFER,						// 目标缓冲区类型
+		sizeof(vertices) * 3 * sizeof(float),	// 缓冲区数据大小
+		vertices,								// 缓冲区数据来源
+		GL_STATIC_DRAW							// 缓冲区使用模式
+	);
+
+	glGenBuffers(1, &IBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
+
+	glBufferData(
+		GL_ELEMENT_ARRAY_BUFFER,				// 目标缓冲区类型
+		6 * sizeof(GLuint),						// 缓冲区数据大小
+		indices,								// 缓冲区数据来源
+		GL_STATIC_DRAW							// 缓冲区使用模式
+	);
+
+	glVertexAttribPointer(
+		0,					// 属性位置
+		3,					// 属性大小
+		GL_FLOAT,			// 属性类型
+		GL_FALSE,			// 是否标准化
+		3 * sizeof(float),	// 步长
+		(void*)0			// 偏移量
+	);
+
+	glEnableVertexAttribArray(0);
+
+	glBindVertexArray(0);
+
 	SDL_Event event{};
 
 	// Window loop
@@ -98,14 +254,21 @@ int main()
 		}
 
 		glViewport(
-			window.GetXPos(),
-			window.GetYPos(),
+			0,
+			0,
 			window.GetWidth(),
 			window.GetHeight()
 		);
 
-		glClearColor(0.f, 0.f, 1.f, 1.f);
+		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT);
+		glUseProgram(shaderProgram);
+		glBindVertexArray(VAO);
+
+		//glDrawArrays(GL_TRIANGLES, 0, 6);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+
+		glBindVertexArray(0);
 
 		SDL_GL_SwapWindow(window.GetSDLWindow().get());
 	}
