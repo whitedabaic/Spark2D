@@ -71,11 +71,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir).\Dependencies\SDL\include;$(SolutionDir).\GLAD\glad\include;$(SolutionDir).\SPARK_UTILITES;$(SolutionDir).\SPARK_WINDOW;$(SolutionDir).\SOIL\include;$(SolutionDir).\Dependencies\glm;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir).\Dependencies\SDL\include;$(SolutionDir).\GLAD\glad\include;$(SolutionDir).\SPARK_UTILITES;$(SolutionDir).\SPARK_WINDOW;$(SolutionDir).\SOIL\include;$(SolutionDir).\Dependencies\glm;$(SolutionDir).\Spark_RENDERING;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir).\Dependencies\SDL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir).\Dependencies\SDL\include;$(SolutionDir).\GLAD\glad\include;$(SolutionDir).\SPARK_UTILITES;$(SolutionDir).\SPARK_WINDOW;$(SolutionDir).\SOIL\include;$(SolutionDir).\Dependencies\glm;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir).\Dependencies\SDL\include;$(SolutionDir).\GLAD\glad\include;$(SolutionDir).\SPARK_UTILITES;$(SolutionDir).\SPARK_WINDOW;$(SolutionDir).\SOIL\include;$(SolutionDir).\Dependencies\glm;$(SolutionDir).\Spark_RENDERING;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir).\Dependencies\SDL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -144,12 +144,19 @@
     <ProjectReference Include="..\SOIL\SOIL.vcxproj">
       <Project>{a8be8343-fc76-431e-ab7f-71c3485b3e44}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\Spark_RENDERING\Spark_RENDERING.vcxproj">
+      <Project>{f6b13907-5788-46da-ad3e-bcf896ccb00f}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\SPARK_UTILITES\SPARK_UTILITES.vcxproj">
       <Project>{3b3a0eff-7ece-4c5a-96e1-8ee6f3db5994}</Project>
     </ProjectReference>
     <ProjectReference Include="..\SPARK_WINDOW\SPARK_WINDOW.vcxproj">
       <Project>{4d969bb7-a161-46d9-87e2-d55115aa30d1}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\shaders\basicShader.frag" />
+    <None Include="assets\shaders\basicShader.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
