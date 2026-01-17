@@ -1,15 +1,17 @@
 ﻿  image_dxt.c
   image_helper.c
+  stb_image-1.09.c
+  stb_image-1.16.c
+  soil.c
+  stb_image_aug.c
 F:\VisualStudioCode\Spark2D\SOIL\src\image_helper.c(325,17): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
 F:\VisualStudioCode\Spark2D\SOIL\src\image_helper.c(366,13): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
 F:\VisualStudioCode\Spark2D\SOIL\src\image_helper.c(373,20): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
 F:\VisualStudioCode\Spark2D\SOIL\src\image_helper.c(415,13): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
 F:\VisualStudioCode\Spark2D\SOIL\src\image_helper.c(422,20): warning C4244: “=”: 从“float”转换到“int”，可能丢失数据
-  soil.c
 F:\VisualStudioCode\Spark2D\SOIL\src\soil.c(1719,36): warning C4018: “<=”: 有符号/无符号不匹配
 F:\VisualStudioCode\Spark2D\SOIL\src\soil.c(1729,19): warning C4018: “<”: 有符号/无符号不匹配
 F:\VisualStudioCode\Spark2D\SOIL\src\soil.c(1867,39): warning C4267: “函数”: 从“size_t”转换到“int”，可能丢失数据
-  stb_image_aug.c
 F:\VisualStudioCode\Spark2D\SOIL\include\SOIL\stbi_dds_aug_c.h(362,19): warning C4018: “>”: 有符号/无符号不匹配
   正在生成代码...
   (编译源文件“src/stb_image_aug.c”)

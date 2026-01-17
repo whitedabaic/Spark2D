@@ -7,6 +7,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <Rendering/Essentials/ShaderLoader.h>
+#include <Rendering/Essentials/TextureLoader.h>
+
+#include <Logger/Logger.h>
 class Camera2D
 {
 private:
@@ -74,77 +77,11 @@ struct UVs
 	}
 };
 
-bool LoadTexture(const std::string& filepath, int& width, int& height, bool blended)
-{
-	int channels = 0;
 
-	unsigned char* image = SOIL_load_image(
-		filepath.c_str(),					// 文件名
-		&width,								// 图像宽度
-		&height,							// 图像高度
-		&channels,							// 图像通道数
-		SOIL_LOAD_AUTO						// 加载模式
-	);
-
-	// Check if the image was loaded successfully
-	if (!image)
-	{
-		std::cout << "Failed to load image: " << SOIL_last_result() << std::endl;
-		return false;
-	}
-
-	GLint format = GL_RGBA;
-
-	switch (channels)
-	{
-		case 1:
-			format = GL_RED;
-			break;
-		case 3:
-			format = GL_RGB;
-			break;
-		case 4:
-			format = GL_RGBA;
-			break;
-		default:
-			format = GL_RGBA;
-			break;
-	}
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	if (!blended)
-	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	}
-	else
-	{
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	}
-
-	glTexImage2D(
-		GL_TEXTURE_2D,			// 目标纹理类型
-		0,						// 细节级别
-		format,					// 纹理内部格式
-		width,					// 纹理宽度
-		height,					// 纹理高度
-		0,						// 边框宽度
-		format,					// 源图像格式
-		GL_UNSIGNED_BYTE,		// 源图像数据类型
-		image					// 图像数据
-	);
-
-	// Delete the image data after generating the texture
-	SOIL_free_image_data(image);
-
-	return true;
-}
 
 int main() 
 {
+	SPARK_INIT_LOGS(true, true)
 	bool running{ true };
 
 	// Inint SDL
@@ -181,7 +118,7 @@ int main()
 	SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
 	// Create a window
-	SPARK_WINDOWING::Window window("SPARK Editor", 640, 480, SDL_WINDOWPOS_CENTERED,
+	SPARK_WINDOWING::Window window("Spark Editor", 640, 480, SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED, true, SDL_WINDOW_OPENGL);
 
 	if (!window.GetSDLWindow())
@@ -216,25 +153,24 @@ int main()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	// Temporarily load a texture
-	// First create the texture ID and gen/bind the texture
-	GLuint texID;
-	glGenTextures(1, &texID);
-	glBindTexture(GL_TEXTURE_2D, texID);
+	// Add temp texture
+	auto texture = SPARK_RENDERING::TextureLoader::Create(
+		SPARK_RENDERING::Texture::TextureType::PIXEL,
+		"./assets/textures/castle.png"
+	);
 
-	// create width and height for the texture
-	int width{ 0 }, height{ 0 };
-
-	// Now we can load the texture
-	if (!LoadTexture("assets/textures/castle.png", width,  height, false))
+	if (!texture)
 	{
-		std::cout << "Failed to load texture!" << std::endl;
+		SPARK_ERROR("Failed to create the texture!");
 		return -1;
 	}
 
 	// Let's make some temporary UVs
 	UVs uvs{};
-
+	int width = texture->GetWidth();
+	int height = texture->GetHeight();
+	SPARK_LOG("Loaded Texture: [width = {0}, height = {1}]", width, height);
+	SPARK_WARN("Loaded Texture: [width = {0}, height = {1}]", width, height);
 	auto generateUVs = [&](float startX, float startY, float spriteWidth, float spriteHeight)
 	{
 		uvs.width = spriteWidth / width;
@@ -380,7 +316,7 @@ int main()
 		shader->SetUniformMat4("uProjection", projection);
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, texID);
+		glBindTexture(GL_TEXTURE_2D, texture->GetID());
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
