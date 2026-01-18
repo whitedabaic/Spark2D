@@ -8,65 +8,11 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <Rendering/Essentials/ShaderLoader.h>
 #include <Rendering/Essentials/TextureLoader.h>
+#include <Rendering/Essentials/Vertex.h>
+#include <Rendering/Core/Camera2D.h>
 
 #include <Logger/Logger.h>
-class Camera2D
-{
-private:
-	int m_Width, m_Height;
-	float m_Scate;
 
-	glm::vec2 m_Position;
-	glm::mat4 m_CameraMatrix, m_OrthoProjection;
-
-	bool m_bNeedsUpdate;
-
-public:
-	Camera2D()
-		:Camera2D{ 640, 480 }
-	{
-
-	}
-	Camera2D(int width, int height)
-		: m_Width{ width }, m_Height{ height }, m_Scate{ 1.f }, m_Position{ glm::vec2{0} },
-		m_CameraMatrix{ 1.f }, m_OrthoProjection{ 1.f }, m_bNeedsUpdate{ true }
-	{
-		// Init orthographic projection
-		m_OrthoProjection = glm::ortho(
-			0.f,							// Left
-			static_cast<float>(m_Width),	// Right
-			static_cast<float>(m_Height),	// Top
-			0.f,							// Bottom
-			-1.f,							// Near
-			1.f								// Far
-		);
-	}
-
-	inline void SetScale(float scale)
-	{
-		m_Scate = scale;
-		m_bNeedsUpdate = true;
-	}
-
-	inline glm::mat4 GetCameraMatrix() { return m_CameraMatrix; }
-
-	void Update()
-	{
-		if(!m_bNeedsUpdate)
-			return;
-
-		// Translate
-		glm::vec3 translate{ -m_Position.x, -m_Position.y, 0.f };
-		m_CameraMatrix = glm::translate(m_OrthoProjection, translate);
-
-		// Scale
-		glm::vec3 scale{ m_Scate, m_Scate, 0.f };
-		m_CameraMatrix *= glm::scale(glm::mat4{ 1.f }, scale);
-
-		m_bNeedsUpdate = false;
-	}
-
-};
 struct UVs
 {
 	float u, v, width, height;
@@ -166,18 +112,18 @@ int main()
 	}
 
 	// Let's make some temporary UVs
-	UVs uvs{};
+	UVs uVs{};
 	int width = texture->GetWidth();
 	int height = texture->GetHeight();
 	SPARK_LOG("Loaded Texture: [width = {0}, height = {1}]", width, height);
 	SPARK_WARN("Loaded Texture: [width = {0}, height = {1}]", width, height);
 	auto generateUVs = [&](float startX, float startY, float spriteWidth, float spriteHeight)
 	{
-		uvs.width = spriteWidth / width;
-		uvs.height = spriteHeight / height;
+		uVs.width = spriteWidth / width;
+		uVs.height = spriteHeight / height;
 
-		uvs.u = startX / width;
-		uvs.v = startY / height;
+		uVs.u = startX * uVs.width;
+		uVs.v = startY * uVs.height;
 	};
 
 	generateUVs(20, 28, 16, 16);
@@ -191,13 +137,33 @@ int main()
 	//};
 
 	// Swapped tex coords
-	float vertices[] =
-	{
-		 10.f,  26.f,  0.0f, uvs.u, (uvs.v + uvs.height),
-		  10.f,  10.f,  0.0f, uvs.u, uvs.v,
-		  26.f, 10.f,  0.0f, (uvs.u + uvs.width), uvs.v,
-		 26.f, 26.f,  0.0f, (uvs.u + uvs.width), (uvs.v + uvs.height)
-	};
+	//float vertices[] =
+	//{
+	//	 10.f,  26.f,  0.0f, uvs.u, (uvs.v + uvs.height),
+	//	  10.f,  10.f,  0.0f, uvs.u, uvs.v,
+	//	  26.f, 10.f,  0.0f, (uvs.u + uvs.width), uvs.v,
+	//	 26.f, 26.f,  0.0f, (uvs.u + uvs.width), (uvs.v + uvs.height)
+	//};
+
+	std::vector<SPARK_RENDERING::Vertex> vertices{};
+	SPARK_RENDERING::Vertex vTL{}, vTR{}, vBL{}, vBR{};
+
+	vTL.position = glm::vec2{ 10.f, 26.f };
+	vTL.uvs = glm::vec2{ uVs.u, uVs.v + uVs.height };
+
+	vTR.position = glm::vec2{ 10.f, 10.f };
+	vTR.uvs = glm::vec2{ uVs.u, uVs.v };
+
+	vBL.position = glm::vec2{ 26.f, 10.f };
+	vBL.uvs = glm::vec2{ (uVs.u + uVs.width), uVs.v };
+
+	vBR.position = glm::vec2{ 26.f, 26.f };
+	vBR.uvs = glm::vec2{ (uVs.u + uVs.width), (uVs.v + uVs.height) };
+
+	vertices.push_back(vTL);
+	vertices.push_back(vTR);
+	vertices.push_back(vBL);
+	vertices.push_back(vBR);
 
 	GLuint indices[] =
 	{
@@ -206,7 +172,7 @@ int main()
 	};
 
 	// Create a temp camera
-	Camera2D camera{};
+	SPARK_RENDERING::Camera2D camera{};
 	camera.SetScale(5.f);
 
 	// Create out first shader
@@ -235,10 +201,10 @@ int main()
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
 	glBufferData(
-		GL_ARRAY_BUFFER,						// 目标缓冲区类型
-		sizeof(vertices) * 3 * sizeof(float),	// 缓冲区数据大小
-		vertices,								// 缓冲区数据来源
-		GL_STATIC_DRAW							// 缓冲区使用模式
+		GL_ARRAY_BUFFER,									// 目标缓冲区类型
+		vertices.size() * sizeof(SPARK_RENDERING::Vertex),	// 缓冲区数据大小
+		vertices.data(),									// 缓冲区数据来源
+		GL_STATIC_DRAW										// 缓冲区使用模式
 	);
 
 	glGenBuffers(1, &IBO);
@@ -252,26 +218,37 @@ int main()
 	);
 
 	glVertexAttribPointer(
-		0,					// 属性位置
-		3,					// 属性大小
-		GL_FLOAT,			// 属性类型
-		GL_FALSE,			// 是否标准化
-		5 * sizeof(float),	// 步长
-		(void*)0			// 偏移量
+		0,															// 属性位置
+		2,															// 属性大小
+		GL_FLOAT,													// 属性类型
+		GL_FALSE,													// 是否标准化
+		sizeof(SPARK_RENDERING::Vertex),							// 步长
+		(void*)offsetof(SPARK_RENDERING::Vertex, position)			// 偏移量
 	);
 
 	glEnableVertexAttribArray(0);
 
 	glVertexAttribPointer(
-		1,									// 属性位置
-		2,									// 属性大小
-		GL_FLOAT,							// 属性类型
-		GL_FALSE,							// 是否标准化
-		5 * sizeof(float),					// 步长
-		reinterpret_cast<void*>(3 * sizeof(float))			// 偏移量
+		1,														// 属性位置
+		2,														// 属性大小
+		GL_FLOAT,												// 属性类型
+		GL_FALSE,												// 是否标准化
+		sizeof(SPARK_RENDERING::Vertex),						// 步长
+		(void*)offsetof(SPARK_RENDERING::Vertex, uvs)			// 偏移量
 	);
 
 	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(
+		2,														// 属性位置
+		4,														// 属性大小
+		GL_UNSIGNED_BYTE,										// 属性类型
+		GL_TRUE,												// 是否标准化
+		sizeof(SPARK_RENDERING::Vertex),						// 步长
+		(void*)offsetof(SPARK_RENDERING::Vertex, color)			// 偏移量
+	);
+
+	glEnableVertexAttribArray(2);
 
 	glBindVertexArray(0);
 
