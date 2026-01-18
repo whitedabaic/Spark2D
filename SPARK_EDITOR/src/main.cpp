@@ -1,4 +1,5 @@
-#define SDL_MAIN_HANDLED 1;
+#define SDL_MAIN_HANDLED 1
+#define NOMINMAX
 #include <Windowing/Window/Window.h>
 #include <SDL.h>
 #include <glad/glad.h>
@@ -10,20 +11,37 @@
 #include <Rendering/Essentials/TextureLoader.h>
 #include <Rendering/Essentials/Vertex.h>
 #include <Rendering/Core/Camera2D.h>
-
 #include <Logger/Logger.h>
+#include <entt.hpp>
 
 struct UVs
 {
-	float u, v, width, height;
-	UVs()
-		: u{ 0.f }, v{ 0.f }, width{ 0.f }, height{ 0.f }
-	{
-
-	}
+	float u{ 0.f }, v{ 0.f }, uv_width{ 0.f }, uv_height{ 0.f };
 };
 
+struct TransformComponent
+{
+	glm::vec2 position{ glm::vec2{0.f} }, scale{ glm::vec2{1.} };
+	float rotation{ 0.f };
+};
 
+struct SpriteComponent
+{
+	float width{ 0.f }, height{ 0.f };
+	UVs uvs{ .u = 0.f, .v = 0.f, .uv_width = 0.f, .uv_height = 0.f };
+
+	SPARK_RENDERING::Color color{ .r = 255, .g = 255, .b = 255, .a = 255 };
+	int start_x{ 0 }, start_y{ 0 };
+
+	void generate_uvs(int textureWidth, int textureHeight)
+	{
+		uvs.uv_width = width / textureWidth;
+		uvs.uv_height = height / textureHeight;
+
+		uvs.u = start_x * uvs.uv_width;
+		uvs.v = start_y * uvs.uv_height;
+	}
+};
 
 int main() 
 {
@@ -99,6 +117,14 @@ int main()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+	// Create a registry
+	auto pRegistry = std::make_unique<entt::registry>();
+	if (!pRegistry)
+	{
+		SPARK_ERROR("Failed to create the entt registry");
+		return -1;
+	}
+
 	// Add temp texture
 	auto texture = SPARK_RENDERING::TextureLoader::Create(
 		SPARK_RENDERING::Texture::TextureType::PIXEL,
@@ -117,53 +143,47 @@ int main()
 	int height = texture->GetHeight();
 	SPARK_LOG("Loaded Texture: [width = {0}, height = {1}]", width, height);
 	SPARK_WARN("Loaded Texture: [width = {0}, height = {1}]", width, height);
-	auto generateUVs = [&](float startX, float startY, float spriteWidth, float spriteHeight)
-	{
-		uVs.width = spriteWidth / width;
-		uVs.height = spriteHeight / height;
 
-		uVs.u = startX * uVs.width;
-		uVs.v = startY * uVs.height;
-	};
+	// Create a new entity -- for test
+	auto ent1 = pRegistry->create();
 
-	generateUVs(20, 28, 16, 16);
-	// Create vertices for a Quad
-	//float vertices[] =
-	//{
-	//	 0.5f,  0.5f,  0.0f, 0.0f, 1.0f,
-	//	 0.5f,  -0.5f, 0.0f, 1.0f, 1.0f,
-	//	 -0.5f, 0.5f,  0.0f, 1.0f, 0.0f,
-	//	 -0.5f, -0.5f, 0.0f, 0.0f, 0.0f
-	//};
+	auto& transform = pRegistry->emplace<TransformComponent>(ent1, TransformComponent{
+		.position = glm::vec2{10.f, 10.f},
+		.scale = glm::vec2{1.f, 1.f},
+		.rotation = 0.f
+		}
+	);
 
-	// Swapped tex coords
-	//float vertices[] =
-	//{
-	//	 10.f,  26.f,  0.0f, uvs.u, (uvs.v + uvs.height),
-	//	  10.f,  10.f,  0.0f, uvs.u, uvs.v,
-	//	  26.f, 10.f,  0.0f, (uvs.u + uvs.width), uvs.v,
-	//	 26.f, 26.f,  0.0f, (uvs.u + uvs.width), (uvs.v + uvs.height)
-	//};
+	auto& sprite = pRegistry->emplace<SpriteComponent>(ent1, SpriteComponent{
+		.width = 16.f,
+		.height = 16.f,
+		.color = SPARK_RENDERING::Color{.r = 0, .g = 255, .b = 0, .a = 255 },
+		.start_x = 0,
+		.start_y = 28,
+		}
+	);
+
+	sprite.generate_uvs(texture->GetWidth(), texture->GetHeight());
 
 	std::vector<SPARK_RENDERING::Vertex> vertices{};
 	SPARK_RENDERING::Vertex vTL{}, vTR{}, vBL{}, vBR{};
 
-	vTL.position = glm::vec2{ 10.f, 26.f };
-	vTL.uvs = glm::vec2{ uVs.u, uVs.v + uVs.height };
+	vTL.position = glm::vec2{ transform.position.x, transform.position.y + sprite.height };
+	vTL.uvs = glm::vec2{ sprite.uvs.u, sprite.uvs.v + sprite.uvs.uv_height };
 
-	vTR.position = glm::vec2{ 10.f, 10.f };
-	vTR.uvs = glm::vec2{ uVs.u, uVs.v };
+	vTR.position = glm::vec2{ transform.position.x + sprite.width, transform.position.y + sprite.height };
+	vTR.uvs = glm::vec2{ sprite.uvs.u + sprite.uvs.uv_width, sprite.uvs.v + sprite.uvs.uv_height };
 
-	vBL.position = glm::vec2{ 26.f, 10.f };
-	vBL.uvs = glm::vec2{ (uVs.u + uVs.width), uVs.v };
+	vBL.position = glm::vec2{ transform.position.x, transform.position.y };
+	vBL.uvs = glm::vec2{ sprite.uvs.u, sprite.uvs.v };
 
-	vBR.position = glm::vec2{ 26.f, 26.f };
-	vBR.uvs = glm::vec2{ (uVs.u + uVs.width), (uVs.v + uVs.height) };
+	vBR.position = glm::vec2{ transform.position.x + sprite.width, transform.position.y };
+	vBR.uvs = glm::vec2{ sprite.uvs.u + sprite.uvs.uv_width, sprite.uvs.v };
 
 	vertices.push_back(vTL);
-	vertices.push_back(vTR);
 	vertices.push_back(vBL);
 	vertices.push_back(vBR);
+	vertices.push_back(vTR);
 
 	GLuint indices[] =
 	{
@@ -173,7 +193,7 @@ int main()
 
 	// Create a temp camera
 	SPARK_RENDERING::Camera2D camera{};
-	camera.SetScale(5.f);
+	camera.SetScale(15.f);
 
 	// Create out first shader
 	auto shader = SPARK_RENDERING::ShaderLoader::Create(
