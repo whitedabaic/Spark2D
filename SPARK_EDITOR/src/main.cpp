@@ -12,36 +12,10 @@
 #include <Rendering/Essentials/Vertex.h>
 #include <Rendering/Core/Camera2D.h>
 #include <Logger/Logger.h>
-#include <entt.hpp>
-
-struct UVs
-{
-	float u{ 0.f }, v{ 0.f }, uv_width{ 0.f }, uv_height{ 0.f };
-};
-
-struct TransformComponent
-{
-	glm::vec2 position{ glm::vec2{0.f} }, scale{ glm::vec2{1.} };
-	float rotation{ 0.f };
-};
-
-struct SpriteComponent
-{
-	float width{ 0.f }, height{ 0.f };
-	UVs uvs{ .u = 0.f, .v = 0.f, .uv_width = 0.f, .uv_height = 0.f };
-
-	SPARK_RENDERING::Color color{ .r = 255, .g = 255, .b = 255, .a = 255 };
-	int start_x{ 0 }, start_y{ 0 };
-
-	void generate_uvs(int textureWidth, int textureHeight)
-	{
-		uvs.uv_width = width / textureWidth;
-		uvs.uv_height = height / textureHeight;
-
-		uvs.u = start_x * uvs.uv_width;
-		uvs.v = start_y * uvs.uv_height;
-	}
-};
+#include <Core/ECS/Entity.h>
+#include <Core/ECS/Components/SpriteComponent.h>
+#include <Core/ECS/Components/Identification.h>
+#include <Core/ECS/Components/TransformComponent.h>
 
 int main() 
 {
@@ -117,14 +91,6 @@ int main()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	// Create a registry
-	auto pRegistry = std::make_unique<entt::registry>();
-	if (!pRegistry)
-	{
-		SPARK_ERROR("Failed to create the entt registry");
-		return -1;
-	}
-
 	// Add temp texture
 	auto texture = SPARK_RENDERING::TextureLoader::Create(
 		SPARK_RENDERING::Texture::TextureType::PIXEL,
@@ -138,23 +104,23 @@ int main()
 	}
 
 	// Let's make some temporary UVs
-	UVs uVs{};
 	int width = texture->GetWidth();
 	int height = texture->GetHeight();
 	SPARK_LOG("Loaded Texture: [width = {0}, height = {1}]", width, height);
 	SPARK_WARN("Loaded Texture: [width = {0}, height = {1}]", width, height);
 
-	// Create a new entity -- for test
-	auto ent1 = pRegistry->create();
+	auto pRegistry = std::make_unique<SPARK_CORE::ECS::Registry>();
 
-	auto& transform = pRegistry->emplace<TransformComponent>(ent1, TransformComponent{
+	SPARK_CORE::ECS::Entity entity1{ *pRegistry, "Ent1", "Test"};
+
+	auto& transform = entity1.AddComponent<SPARK_CORE::ECS::TransformComponent>(SPARK_CORE::ECS::TransformComponent{
 		.position = glm::vec2{10.f, 10.f},
 		.scale = glm::vec2{1.f, 1.f},
 		.rotation = 0.f
 		}
 	);
 
-	auto& sprite = pRegistry->emplace<SpriteComponent>(ent1, SpriteComponent{
+	auto& sprite = entity1.AddComponent<SPARK_CORE::ECS::SpriteComponent>(SPARK_CORE::ECS::SpriteComponent{
 		.width = 16.f,
 		.height = 16.f,
 		.color = SPARK_RENDERING::Color{.r = 0, .g = 255, .b = 0, .a = 255 },
@@ -184,6 +150,10 @@ int main()
 	vertices.push_back(vBL);
 	vertices.push_back(vBR);
 	vertices.push_back(vTR);
+
+	auto& id = entity1.GetComponent<SPARK_CORE::ECS::Identification>();
+
+	SPARK_LOG("Name: {0}, Group: {1}, ID: {2}", id.name, id.group, id.entity_id);
 
 	GLuint indices[] =
 	{
