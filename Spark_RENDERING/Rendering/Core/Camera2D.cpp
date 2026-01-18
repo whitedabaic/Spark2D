@@ -36,5 +36,4 @@ namespace SPARK_RENDERING {
 
 		m_bNeedsUpdate = false;
 	}
-
 }
