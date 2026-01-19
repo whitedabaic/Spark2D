@@ -17,6 +17,7 @@
 #include <Core/Resources/AssetManager.h>
 
 #include <Core/Systems/ScriptingSystem.h>
+#include <Core/Systems/RenderSystem.h>
 
 namespace SPARK_EDITOR {
 	bool Application::Initialize()
@@ -88,7 +89,7 @@ namespace SPARK_EDITOR {
 			return false;
 		}
 
-		// ENable Alpha Blending
+		// Enable Alpha Blending
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -120,51 +121,26 @@ namespace SPARK_EDITOR {
 
 		auto& transform = entity1.AddComponent<SPARK_CORE::ECS::TransformComponent>(SPARK_CORE::ECS::TransformComponent{
 			.position = glm::vec2{10.f, 10.f},
-			.scale = glm::vec2{1.f, 1.f},
-			.rotation = 0.f
+			.scale = glm::vec2{3.f, 3.f},
+			.rotation = 45.f
 			}
 		);
 
 		auto& sprite = entity1.AddComponent<SPARK_CORE::ECS::SpriteComponent>(SPARK_CORE::ECS::SpriteComponent{
 			.width = 16.f,
 			.height = 16.f,
-			.color = SPARK_RENDERING::Color{.r = 0, .g = 255, .b = 0, .a = 255 },
+			.color = SPARK_RENDERING::Color{.r = 255, .g = 0, .b = 255, .a = 255 },
 			.start_x = 0,
 			.start_y = 28,
+			.layer = 0,
+			.texture_name = "castle"
 			}
-			);
+		);
 
 		sprite.generate_uvs(texture.GetWidth(), texture.GetHeight());
 
-		std::vector<SPARK_RENDERING::Vertex> vertices{};
-		SPARK_RENDERING::Vertex vTL{}, vTR{}, vBL{}, vBR{};
-
-		vTL.position = glm::vec2{ transform.position.x, transform.position.y + sprite.height };
-		vTL.uvs = glm::vec2{ sprite.uvs.u, sprite.uvs.v + sprite.uvs.uv_height };
-
-		vTR.position = glm::vec2{ transform.position.x + sprite.width, transform.position.y + sprite.height };
-		vTR.uvs = glm::vec2{ sprite.uvs.u + sprite.uvs.uv_width, sprite.uvs.v + sprite.uvs.uv_height };
-
-		vBL.position = glm::vec2{ transform.position.x, transform.position.y };
-		vBL.uvs = glm::vec2{ sprite.uvs.u, sprite.uvs.v };
-
-		vBR.position = glm::vec2{ transform.position.x + sprite.width, transform.position.y };
-		vBR.uvs = glm::vec2{ sprite.uvs.u + sprite.uvs.uv_width, sprite.uvs.v };
-
-		vertices.push_back(vTL);
-		vertices.push_back(vBL);
-		vertices.push_back(vBR);
-		vertices.push_back(vTR);
-
 		auto& id = entity1.GetComponent<SPARK_CORE::ECS::Identification>();
-
 		SPARK_LOG("Name: {0}, Group: {1}, ID: {2}", id.name, id.group, id.entity_id);
-
-		GLuint indices[] =
-		{
-			0, 1, 2,
-			2, 3, 0
-		};
 
 		// Create the lua state
 		auto lua = std::make_shared<sol::state>();
@@ -202,9 +178,21 @@ namespace SPARK_EDITOR {
 			return false;
 		}
 
+		auto renderSystem = std::make_shared<SPARK_CORE::Systems::RenderSystem>(*m_pRegistry);
+		if (!renderSystem)
+		{
+			SPARK_ERROR("Failed to create the render system!");
+			return false;
+		}
+
+		if (!m_pRegistry->AddToContext<std::shared_ptr<SPARK_CORE::Systems::RenderSystem>>(renderSystem))
+		{
+			SPARK_ERROR("Failed to add the render system to the registry context!");
+			return false;
+		}
+
 		// Create a temp camera
 		auto camera = std::make_shared<SPARK_RENDERING::Camera2D>();
-		camera->SetScale(15.f);
 
 		if (!m_pRegistry->AddToContext<std::shared_ptr<SPARK_RESOURCES::AssetManager>>(assetManager))
 		{
@@ -223,68 +211,6 @@ namespace SPARK_EDITOR {
 			SPARK_ERROR("Failed to load the shaders!");
 			return false;
 		}
-
-		// Let's generate VAO
-		glGenVertexArrays(1, &VAO);
-
-		// Generate VBO
-		glGenBuffers(1, &VBO);
-
-		// Bind the VAO and VBO
-		glBindVertexArray(VAO);
-		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-		glBufferData(
-			GL_ARRAY_BUFFER,									// 目标缓冲区类型
-			vertices.size() * sizeof(SPARK_RENDERING::Vertex),	// 缓冲区数据大小
-			vertices.data(),									// 缓冲区数据来源
-			GL_STATIC_DRAW										// 缓冲区使用模式
-		);
-
-		glGenBuffers(1, &IBO);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, IBO);
-
-		glBufferData(
-			GL_ELEMENT_ARRAY_BUFFER,				// 目标缓冲区类型
-			6 * sizeof(GLuint),						// 缓冲区数据大小
-			indices,								// 缓冲区数据来源
-			GL_STATIC_DRAW							// 缓冲区使用模式
-		);
-
-		glVertexAttribPointer(
-			0,															// 属性位置
-			2,															// 属性大小
-			GL_FLOAT,													// 属性类型
-			GL_FALSE,													// 是否标准化
-			sizeof(SPARK_RENDERING::Vertex),							// 步长
-			(void*)offsetof(SPARK_RENDERING::Vertex, position)			// 偏移量
-		);
-
-		glEnableVertexAttribArray(0);
-
-		glVertexAttribPointer(
-			1,														// 属性位置
-			2,														// 属性大小
-			GL_FLOAT,												// 属性类型
-			GL_FALSE,												// 是否标准化
-			sizeof(SPARK_RENDERING::Vertex),						// 步长
-			(void*)offsetof(SPARK_RENDERING::Vertex, uvs)			// 偏移量
-		);
-
-		glEnableVertexAttribArray(1);
-
-		glVertexAttribPointer(
-			2,														// 属性位置
-			4,														// 属性大小
-			GL_UNSIGNED_BYTE,										// 属性类型
-			GL_TRUE,												// 是否标准化
-			sizeof(SPARK_RENDERING::Vertex),						// 步长
-			(void*)offsetof(SPARK_RENDERING::Vertex, color)			// 偏移量
-		);
-
-		glEnableVertexAttribArray(2);
-
-		glBindVertexArray(0);
 
 		return true;
 	}
@@ -343,21 +269,42 @@ namespace SPARK_EDITOR {
 
 		auto& scriptSystem = m_pRegistry->GetContext<std::shared_ptr<SPARK_CORE::Systems::ScriptingSystem>>();
 		scriptSystem->Update();
+
+		auto view = m_pRegistry->GetRegistry().view<SPARK_CORE::ECS::TransformComponent, SPARK_CORE::ECS::SpriteComponent>();
+
+		static float rotation{ 0.f };
+		static float x_pos{ 10.f };
+		static bool bMoveRight{ true };
+
+		if (rotation >= 360.f)
+			rotation = 0.f;
+
+		if (bMoveRight && x_pos < 300.f)
+			x_pos += 3;
+		else if (bMoveRight && x_pos >= 300.f)
+			bMoveRight = false;
+
+		if (!bMoveRight && x_pos > 10.f)
+			x_pos -= 3;
+		else if (!bMoveRight && x_pos <= 10.f)
+			bMoveRight = true;
+
+		for (const auto& entity : view)
+		{
+			SPARK_CORE::ECS::Entity ent{ *m_pRegistry, entity };
+			auto& transform = ent.GetComponent<SPARK_CORE::ECS::TransformComponent>();
+
+			transform.rotation = rotation;
+			transform.position.x = x_pos;
+		}
+
+		rotation += bMoveRight ? 9 : -9;
+
 	}
 
 	void Application::Render()
 	{
-		auto& assetManager = m_pRegistry->GetContext<std::shared_ptr<SPARK_RESOURCES::AssetManager>>();
-		auto& camera = m_pRegistry->GetContext<std::shared_ptr<SPARK_RENDERING::Camera2D>>();
-
-		auto& shader = assetManager->GetShader("basic");
-		auto projection = camera->GetCameraMatrix();
-
-		if (shader.ShaderProgramID() == 0)
-		{
-			SPARK_ERROR("SHader program has not be created correctly!");
-			return;
-		}
+		auto& renderSystem = m_pRegistry->GetContext<std::shared_ptr<SPARK_CORE::Systems::RenderSystem>>();
 
 		glViewport(
 			0, 0,
@@ -367,24 +314,12 @@ namespace SPARK_EDITOR {
 
 		glClearColor(1.f, 1.f, 1.f, 1.f);
 		glClear(GL_COLOR_BUFFER_BIT);
-		shader.Enable();
-		glBindVertexArray(VAO);
-
-		shader.SetUniformMat4("uProjection", projection);
-
-		glActiveTexture(GL_TEXTURE0);
-		const auto& texture = assetManager->GetTexture("castle");
-		glBindTexture(GL_TEXTURE_2D, texture.GetID());
 
 		auto& scriptSystem = m_pRegistry->GetContext<std::shared_ptr<SPARK_CORE::Systems::ScriptingSystem>>();
 		scriptSystem->Render();
+		renderSystem->Update();
 
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
-		glBindVertexArray(0);
 		SDL_GL_SwapWindow(m_pWindow->GetSDLWindow().get());
-
-		shader.Disable();
 	}
 
 	void Application::ClearUp()
@@ -394,7 +329,6 @@ namespace SPARK_EDITOR {
 
 	Application::Application()
 		: m_pWindow{ nullptr }, m_pRegistry{ nullptr }, m_Event{}, m_bIsRunning{ true }
-		, VAO{ 0 }, VBO{ 0 }, IBO{ 0 }
 	{
 	}
 

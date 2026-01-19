@@ -13,7 +13,6 @@ namespace SPARK_EDITOR {
 		SDL_Event m_Event;
 		bool m_bIsRunning;
 
-		GLuint VAO, VBO, IBO;
 	private:
 		bool Initialize();
 		bool LoadShaders();
