@@ -16,6 +16,8 @@
 #include <Core/ECS/Components/TransformComponent.h>
 #include <Core/Resources/AssetManager.h>
 
+#include <Core/Systems/ScriptingSystem.h>
+
 namespace SPARK_EDITOR {
 	bool Application::Initialize()
 	{
@@ -164,6 +166,42 @@ namespace SPARK_EDITOR {
 			2, 3, 0
 		};
 
+		// Create the lua state
+		auto lua = std::make_shared<sol::state>();
+
+		if (!lua)
+		{
+			SPARK_ERROR("Failed to create the lua state!");
+			return false;
+		}
+
+		lua->open_libraries(sol::lib::base, sol::lib::math, sol::lib::os, sol::lib::table, sol::lib::io, sol::lib::string);
+
+		if (!m_pRegistry->AddToContext<std::shared_ptr<sol::state>>(lua))
+		{
+			SPARK_ERROR("Failed to add the sol::state to the registry context");
+			return false;
+		}
+
+		auto scriptSystem = std::make_shared<SPARK_CORE::Systems::ScriptingSystem>(*m_pRegistry);
+		if (!scriptSystem)
+		{
+			SPARK_ERROR("Failed to create the script system!");
+			return false;
+		}
+
+		if (!scriptSystem->LoadMainScript(*lua))
+		{
+			SPARK_ERROR("Failed to load the main lua script!");
+			return false;
+		}
+
+		if (!m_pRegistry->AddToContext<std::shared_ptr<SPARK_CORE::Systems::ScriptingSystem>>(scriptSystem))
+		{
+			SPARK_ERROR("Failed to add the script system to the registry context!");
+			return false;
+		}
+
 		// Create a temp camera
 		auto camera = std::make_shared<SPARK_RENDERING::Camera2D>();
 		camera->SetScale(15.f);
@@ -302,6 +340,9 @@ namespace SPARK_EDITOR {
 		}
 
 		camera->Update();
+
+		auto& scriptSystem = m_pRegistry->GetContext<std::shared_ptr<SPARK_CORE::Systems::ScriptingSystem>>();
+		scriptSystem->Update();
 	}
 
 	void Application::Render()
@@ -334,6 +375,9 @@ namespace SPARK_EDITOR {
 		glActiveTexture(GL_TEXTURE0);
 		const auto& texture = assetManager->GetTexture("castle");
 		glBindTexture(GL_TEXTURE_2D, texture.GetID());
+
+		auto& scriptSystem = m_pRegistry->GetContext<std::shared_ptr<SPARK_CORE::Systems::ScriptingSystem>>();
+		scriptSystem->Render();
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 

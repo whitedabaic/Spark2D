@@ -1,9 +1,2 @@
-﻿  AssetManager.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(130,9): warning C4005: “APIENTRY”: 宏重定义
-  (编译源文件“Core/Resources/AssetManager.cpp”)
-      F:\VisualStudioCode\Spark2D\GLAD\glad\include\glad\glad.h(32,9):
-      参见“APIENTRY”的前一个定义
-  
-F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\Resources\AssetManager.cpp(72,1): warning C4172: 返回局部变量的地址或临时 : shader
-F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\Resources\AssetManager.cpp(37,1): warning C4172: 返回局部变量的地址或临时 
+﻿  ScriptingSystem.cpp
   SPARK_CORE.vcxproj -> F:\VisualStudioCode\Spark2D\x64\Debug\SPARK_CORE.lib
