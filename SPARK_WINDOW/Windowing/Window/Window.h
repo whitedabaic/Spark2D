@@ -27,7 +27,7 @@ namespace SPARK_WINDOWING {
 
 		inline void SetGLContext(SDL_GLContext gl_context) { m_GLContext = gl_context; }
 		inline SDL_GLContext& GetGLContext() { return m_GLContext; }
-		inline WindowPtr& GetSDLWindow() { return m_pWindow; }
+		inline WindowPtr& GetWindow() { return m_pWindow; }
 		inline const std::string& GetWindowName() const { return m_sTitle; }
 
 		inline const int GetXPos() const { return m_XPos; }

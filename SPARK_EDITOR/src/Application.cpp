@@ -1,4 +1,5 @@
 #include "Application.h"
+
 #include <SDL.h>
 #include <glad/glad.h>
 #include <iostream>
@@ -20,30 +21,30 @@
 #include <Core/Systems/RenderSystem.h>
 
 namespace SPARK_EDITOR {
-	bool Application::Initialize()
-	{
-		SPARK_INIT_LOGS(true, true)
 
-		// Inint SDL
+    bool Application::Initialize()
+    {
+		SPARK_INIT_LOGS(true, true);
+
+		// Init SDL
 		if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
 		{
 			std::string error = SDL_GetError();
-			SPARK_ERROR( "Failed to initialize SDL: {0}", error);
+			SPARK_ERROR("Failed to initialize SDL: {0}", error);
 			return false;
-
 		}
 
-		//Set up OpenGL
+		// Set up OpenGL
 		if (SDL_GL_LoadLibrary(NULL) != 0)
 		{
 			std::string error = SDL_GetError();
-			SPARK_ERROR( "Failed to load OpenGL library: {0}", error);
+			SPARK_ERROR("Failed to Open GL Library: {0}", error);
 			return false;
 		}
 
 		// Set the OpenGL attributes
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
 		// Set the number of bits per channel
@@ -55,22 +56,21 @@ namespace SPARK_EDITOR {
 		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 		SDL_GL_SetAttribute(SDL_GL_ACCELERATED_VISUAL, 1);
 
-		// Create a window
+		// Create the Window
 		m_pWindow = std::make_unique<SPARK_WINDOWING::Window>(
-			"Spark Editor", 
+			"Test Window", 
 			640, 480, 
-			SDL_WINDOWPOS_CENTERED,
-			SDL_WINDOWPOS_CENTERED,
+			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
 			true, SDL_WINDOW_OPENGL);
 
-		if (!m_pWindow->GetSDLWindow())
+		if (!m_pWindow->GetWindow())
 		{
-			SPARK_ERROR("Failed to create window.");
+			SPARK_ERROR("Failed to create the window!");
 			return false;
 		}
 
-		// Create OpenGL context
-		m_pWindow->SetGLContext(SDL_GL_CreateContext(m_pWindow->GetSDLWindow().get()));
+		// Create the openGL context
+		m_pWindow->SetGLContext(SDL_GL_CreateContext(m_pWindow->GetWindow().get()));
 
 		if (!m_pWindow->GetGLContext())
 		{
@@ -79,13 +79,13 @@ namespace SPARK_EDITOR {
 			return false;
 		}
 
-		SDL_GL_MakeCurrent(m_pWindow->GetSDLWindow().get(), m_pWindow->GetGLContext());
+		SDL_GL_MakeCurrent(m_pWindow->GetWindow().get(), m_pWindow->GetGLContext());
 		SDL_GL_SetSwapInterval(1);
 
-		// Initialize GLAD
+		// Initialize Glad
 		if (gladLoadGLLoader(SDL_GL_GetProcAddress) == 0)
 		{
-			SPARK_ERROR("Failed to initialize GLAD");
+			SPARK_ERROR("Failed to LoadGL --> GLAD");
 			return false;
 		}
 
@@ -96,51 +96,17 @@ namespace SPARK_EDITOR {
 		auto assetManager = std::make_shared<SPARK_RESOURCES::AssetManager>();
 		if (!assetManager)
 		{
-			SPARK_ERROR("Failed to create the Asset Manager!");
+			SPARK_ERROR("Failed to create the asset manager!");
 			return false;
 		}
 
 		if (!assetManager->AddTexture("castle", "./assets/textures/castle.png", true))
 		{
-			SPARK_ERROR("Failed to load texture into Asset Manager!");
+			SPARK_ERROR("Failed to create and add the texture");
 			return false;
 		}
 
-		// Add temp texture
-		auto texture = assetManager->GetTexture("castle");
-
-		// Let's make some temporary UVs
-		int width = texture.GetWidth();
-		int height = texture.GetHeight();
-		SPARK_LOG("Loaded Texture: [width = {0}, height = {1}]", width, height);
-		SPARK_WARN("Loaded Texture: [width = {0}, height = {1}]", width, height);
-
 		m_pRegistry = std::make_unique<SPARK_CORE::ECS::Registry>();
-
-		SPARK_CORE::ECS::Entity entity1{ *m_pRegistry, "Ent1", "Test" };
-
-		auto& transform = entity1.AddComponent<SPARK_CORE::ECS::TransformComponent>(SPARK_CORE::ECS::TransformComponent{
-			.position = glm::vec2{10.f, 10.f},
-			.scale = glm::vec2{3.f, 3.f},
-			.rotation = 45.f
-			}
-		);
-
-		auto& sprite = entity1.AddComponent<SPARK_CORE::ECS::SpriteComponent>(SPARK_CORE::ECS::SpriteComponent{
-			.width = 16.f,
-			.height = 16.f,
-			.color = SPARK_RENDERING::Color{.r = 255, .g = 0, .b = 255, .a = 255 },
-			.start_x = 0,
-			.start_y = 28,
-			.layer = 0,
-			.texture_name = "castle"
-			}
-		);
-
-		sprite.generate_uvs(texture.GetWidth(), texture.GetHeight());
-
-		auto& id = entity1.GetComponent<SPARK_CORE::ECS::Identification>();
-		SPARK_LOG("Name: {0}, Group: {1}, ID: {2}", id.name, id.group, id.entity_id);
 
 		// Create the lua state
 		auto lua = std::make_shared<sol::state>();
@@ -155,7 +121,7 @@ namespace SPARK_EDITOR {
 
 		if (!m_pRegistry->AddToContext<std::shared_ptr<sol::state>>(lua))
 		{
-			SPARK_ERROR("Failed to add the sol::state to the registry context");
+			SPARK_ERROR("Failed to add the sol::state to the registry context!");
 			return false;
 		}
 
@@ -163,12 +129,6 @@ namespace SPARK_EDITOR {
 		if (!scriptSystem)
 		{
 			SPARK_ERROR("Failed to create the script system!");
-			return false;
-		}
-
-		if (!scriptSystem->LoadMainScript(*lua))
-		{
-			SPARK_ERROR("Failed to load the main lua script!");
 			return false;
 		}
 
@@ -212,6 +172,14 @@ namespace SPARK_EDITOR {
 			return false;
 		}
 
+		SPARK_CORE::Systems::ScriptingSystem::RegisterLuaBindings(*lua, *m_pRegistry);
+
+		if (!scriptSystem->LoadMainScript(*lua))
+		{
+			SPARK_ERROR("Failed to load the main lua script!");
+			return false;
+		}
+
 		return true;
 	}
 
@@ -236,7 +204,7 @@ namespace SPARK_EDITOR {
 
 	void Application::ProcessEvents()
 	{
-		// Process events
+		// Process Events
 		while (SDL_PollEvent(&m_Event))
 		{
 			switch (m_Event.type)
@@ -246,9 +214,7 @@ namespace SPARK_EDITOR {
 				break;
 			case SDL_KEYDOWN:
 				if (m_Event.key.keysym.sym == SDLK_ESCAPE)
-				{
 					m_bIsRunning = false;
-				}
 				break;
 			default:
 				break;
@@ -269,37 +235,6 @@ namespace SPARK_EDITOR {
 
 		auto& scriptSystem = m_pRegistry->GetContext<std::shared_ptr<SPARK_CORE::Systems::ScriptingSystem>>();
 		scriptSystem->Update();
-
-		auto view = m_pRegistry->GetRegistry().view<SPARK_CORE::ECS::TransformComponent, SPARK_CORE::ECS::SpriteComponent>();
-
-		static float rotation{ 0.f };
-		static float x_pos{ 10.f };
-		static bool bMoveRight{ true };
-
-		if (rotation >= 360.f)
-			rotation = 0.f;
-
-		if (bMoveRight && x_pos < 300.f)
-			x_pos += 3;
-		else if (bMoveRight && x_pos >= 300.f)
-			bMoveRight = false;
-
-		if (!bMoveRight && x_pos > 10.f)
-			x_pos -= 3;
-		else if (!bMoveRight && x_pos <= 10.f)
-			bMoveRight = true;
-
-		for (const auto& entity : view)
-		{
-			SPARK_CORE::ECS::Entity ent{ *m_pRegistry, entity };
-			auto& transform = ent.GetComponent<SPARK_CORE::ECS::TransformComponent>();
-
-			transform.rotation = rotation;
-			transform.position.x = x_pos;
-		}
-
-		rotation += bMoveRight ? 9 : -9;
-
 	}
 
 	void Application::Render()
@@ -319,10 +254,10 @@ namespace SPARK_EDITOR {
 		scriptSystem->Render();
 		renderSystem->Update();
 
-		SDL_GL_SwapWindow(m_pWindow->GetSDLWindow().get());
+		SDL_GL_SwapWindow(m_pWindow->GetWindow().get());
 	}
 
-	void Application::ClearUp()
+	void Application::CleanUp()
 	{
 		SDL_Quit();
 	}
@@ -330,6 +265,7 @@ namespace SPARK_EDITOR {
 	Application::Application()
 		: m_pWindow{ nullptr }, m_pRegistry{ nullptr }, m_Event{}, m_bIsRunning{ true }
 	{
+
 	}
 
 	Application& Application::GetInstance()
@@ -357,6 +293,6 @@ namespace SPARK_EDITOR {
 			Render();
 		}
 
-		ClearUp();
+		CleanUp();
 	}
 }

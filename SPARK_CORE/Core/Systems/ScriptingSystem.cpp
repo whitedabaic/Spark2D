@@ -1,9 +1,15 @@
 #include "ScriptingSystem.h"
 #include "../ECS/Components/ScriptComponent.h"
+#include "../ECS/Components/TransformComponent.h"
+#include "../ECS/Components/SpriteComponent.h"
 #include "../ECS/Entity.h"
+
 #include <Logger/Logger.h>
 
+using namespace SPARK_CORE::ECS;
+
 namespace SPARK_CORE::Systems {
+
 	ScriptingSystem::ScriptingSystem(SPARK_CORE::ECS::Registry& registry)
 		: m_Registry(registry), m_bMainLoaded{ false }
 	{
@@ -17,8 +23,8 @@ namespace SPARK_CORE::Systems {
 		}
 		catch (const sol::error& err)
 		{
-			auto e = err.what();
-			SPARK_ERROR("Error loading the main lua script: {0}", e);
+			auto error = err.what();
+			SPARK_ERROR("Error loading the main lua script: {0}", error);
 			return false;
 		}
 
@@ -72,7 +78,7 @@ namespace SPARK_CORE::Systems {
 				continue;
 
 			auto& script = ent.GetComponent<SPARK_CORE::ECS::ScriptComponent>();
-			auto error = script.update(script);
+			auto error = script.update(entity);
 			if (!error.valid())
 			{
 				sol::error err = error;
@@ -99,7 +105,7 @@ namespace SPARK_CORE::Systems {
 				continue;
 
 			auto& script = ent.GetComponent<SPARK_CORE::ECS::ScriptComponent>();
-			auto error = script.render(script);
+			auto error = script.render(entity);
 			if (!error.valid())
 			{
 				sol::error err = error;
@@ -107,5 +113,19 @@ namespace SPARK_CORE::Systems {
 				SPARK_ERROR("Error running the Render script: {0}", e);
 			}
 		}
+	}
+
+	void ScriptingSystem::RegisterLuaBindings(sol::state& lua, SPARK_CORE::ECS::Registry& registry)
+	{
+		Registry::CreateLuaRegistryBind(lua, registry);
+		Entity::CreateLuaEntityBind(lua, registry);
+		TransformComponent::CreateLuaTransformBind(lua);
+		SpriteComponent::CreateSpriteLuaBind(lua, registry);
+
+		Entity::RegisterMetaComponent<TransformComponent>();
+		Entity::RegisterMetaComponent<SpriteComponent>();
+
+		Registry::RegisterMetaComponent<TransformComponent>();
+		Registry::RegisterMetaComponent<SpriteComponent>();
 	}
 }

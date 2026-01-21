@@ -1,13 +1,14 @@
 #pragma once
 #include <Rendering/Essentials/Vertex.h>
+#include <sol/sol.hpp>
+#include "../Registry.h"
 
-namespace SPARK_CORE::ECS
-{
+namespace SPARK_CORE::ECS {
 	struct UVs
 	{
 		float u{ 0.f }, v{ 0.f }, uv_width{ 0.f }, uv_height{ 0.f };
 	};
-	
+
 	struct SpriteComponent
 	{
 		float width{ 0.f }, height{ 0.f };
@@ -26,5 +27,8 @@ namespace SPARK_CORE::ECS
 			uvs.u = start_x * uvs.uv_width;
 			uvs.v = start_y * uvs.uv_height;
 		}
+
+
+		static void CreateSpriteLuaBind(sol::state& lua, SPARK_CORE::ECS::Registry& registry);
 	};
 }

@@ -21,7 +21,7 @@ namespace SPARK_EDITOR {
 		void Update();
 		void Render();
 
-		void ClearUp();
+		void CleanUp();
 
 		Application();
 	public:

@@ -16,5 +16,8 @@ namespace SPARK_CORE::Systems {
 		bool LoadMainScript(sol::state& lua);
 		void Update();
 		void Render();
+
+		static void RegisterLuaBindings(sol::state& lua, SPARK_CORE::ECS::Registry& registry);
 	};
+
 }
