@@ -3,10 +3,14 @@
 gEntity = Entity("TestEntity", "Groupy")
 gEntity2 = Entity("BigTesty", "Groupy")
 local transform = gEntity:add_component(
-	Transform(100, 100, 10, 10, 0)
+	Transform(vec2(100, 100), vec2(10, 10), 0)
 )
 
 gEntity2:add_component(Transform(200, 100, 10, 10, 0))
+local sprite2 = gEntity2:add_component(Sprite("red_player", 24.0, 24.0, 0, 0, 0))
+sprite2:generate_uvs()
+
+gEntity2:add_component(Animation(6, 10, 0, false))
 
 local sprite = gEntity:add_component(
 	Sprite("castle", 16.0, 16.0, 0, 28, 0)
@@ -50,10 +54,8 @@ main = {
 				move_right = true 
 			end 
 
-			local pos_x, pos_y = transform:position()
-			pos_x = x_pos
+			transform.position.x = x_pos
 			transform.rotation = rotation 
-			transform:set_pos(pos_x, pos_y)
 
 			if move_right then 
 				rotation = rotation + 9
@@ -75,7 +77,7 @@ main = {
 				value = 0
 			end 
 
-			transform:set_scale(scale, scale)
+			transform.scale = vec2(scale, scale)
 
 			local sprite2 = gEntity:get_component(Sprite)
 			--print("Texture name: "..sprite2.texture_name)

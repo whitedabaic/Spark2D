@@ -1,8 +1,11 @@
+F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\ECS\Components\AnimationComponent.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\AnimationComponent.obj
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\ECS\Components\SpriteComponent.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\SpriteComponent.obj
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\ECS\Components\TransformComponent.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\TransformComponent.obj
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\ECS\Entity.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\Entity.obj
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\ECS\MetaUtilities.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\MetaUtilities.obj
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\ECS\Registry.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\Registry.obj
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\Resources\AssetManager.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\AssetManager.obj
+F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\Scripting\GlmLuaBindings.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\GlmLuaBindings.obj
+F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\Systems\AnimationSystem.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\AnimationSystem.obj
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\Systems\RenderSystem.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\RenderSystem.obj
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\Systems\ScriptingSystem.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\ScriptingSystem.obj

@@ -15,10 +15,12 @@
 #include <Core/ECS/Components/SpriteComponent.h>
 #include <Core/ECS/Components/Identification.h>
 #include <Core/ECS/Components/TransformComponent.h>
+#include <Core/ECS/Components/AnimationComponent.h>
 #include <Core/Resources/AssetManager.h>
 
 #include <Core/Systems/ScriptingSystem.h>
 #include <Core/Systems/RenderSystem.h>
+#include <Core/Systems/AnimationSystem.h>
 
 namespace SPARK_EDITOR {
 
@@ -106,6 +108,12 @@ namespace SPARK_EDITOR {
 			return false;
 		}
 
+		if (!assetManager->AddTexture("red_player", "./assets/textures/red_player.png", true))
+		{
+			SPARK_ERROR("Failed to create and add the texture");
+			return false;
+		}
+
 		m_pRegistry = std::make_unique<SPARK_CORE::ECS::Registry>();
 
 		// Create the lua state
@@ -148,6 +156,19 @@ namespace SPARK_EDITOR {
 		if (!m_pRegistry->AddToContext<std::shared_ptr<SPARK_CORE::Systems::RenderSystem>>(renderSystem))
 		{
 			SPARK_ERROR("Failed to add the render system to the registry context!");
+			return false;
+		}
+
+		auto animationSystem = std::make_shared<SPARK_CORE::Systems::AnimationSystem>(*m_pRegistry);
+		if (!animationSystem)
+		{
+			SPARK_ERROR("Failed to create the animation system!");
+			return false;
+		}
+
+		if (!m_pRegistry->AddToContext<std::shared_ptr<SPARK_CORE::Systems::AnimationSystem>>(animationSystem))
+		{
+			SPARK_ERROR("Failed to add the animation system to the registry context!");
 			return false;
 		}
 
@@ -235,6 +256,9 @@ namespace SPARK_EDITOR {
 
 		auto& scriptSystem = m_pRegistry->GetContext<std::shared_ptr<SPARK_CORE::Systems::ScriptingSystem>>();
 		scriptSystem->Update();
+
+		auto& animationSystem = m_pRegistry->GetContext<std::shared_ptr<SPARK_CORE::Systems::AnimationSystem>>();
+		animationSystem->Update();
 	}
 
 	void Application::Render()

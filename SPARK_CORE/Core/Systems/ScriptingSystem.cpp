@@ -2,7 +2,10 @@
 #include "../ECS/Components/ScriptComponent.h"
 #include "../ECS/Components/TransformComponent.h"
 #include "../ECS/Components/SpriteComponent.h"
+#include "../ECS/Components/AnimationComponent.h"
 #include "../ECS/Entity.h"
+
+#include "../Scripting/GlmLuaBindings.h"
 
 #include <Logger/Logger.h>
 
@@ -117,15 +120,20 @@ namespace SPARK_CORE::Systems {
 
 	void ScriptingSystem::RegisterLuaBindings(sol::state& lua, SPARK_CORE::ECS::Registry& registry)
 	{
+		SPARK_CORE::Scripting::GLMBindings::CreateGLMBinds(lua);
+
 		Registry::CreateLuaRegistryBind(lua, registry);
 		Entity::CreateLuaEntityBind(lua, registry);
 		TransformComponent::CreateLuaTransformBind(lua);
 		SpriteComponent::CreateSpriteLuaBind(lua, registry);
+		AnimationComponent::CreateAnimationLuaBind(lua);
 
 		Entity::RegisterMetaComponent<TransformComponent>();
 		Entity::RegisterMetaComponent<SpriteComponent>();
+		Entity::RegisterMetaComponent<AnimationComponent>();
 
 		Registry::RegisterMetaComponent<TransformComponent>();
 		Registry::RegisterMetaComponent<SpriteComponent>();
+		Registry::RegisterMetaComponent<AnimationComponent>();
 	}
 }
