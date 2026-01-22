@@ -27,6 +27,12 @@
     <ClInclude Include="Windowing\Inputs\Keyboard.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Windowing\Inputs\MouseButtons.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Windowing\Inputs\Mouse.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Windowing\Window\Window.cpp">
@@ -36,6 +42,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Windowing\Inputs\Keyboard.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Windowing\Inputs\Mouse.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

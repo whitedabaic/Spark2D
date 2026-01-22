@@ -24,6 +24,7 @@
 
 #include <Core/Scripting/InputManager.h>
 #include <Windowing/Inputs/Keyboard.h>
+#include <Windowing/Inputs/Mouse.h>
 
 namespace SPARK_EDITOR {
 
@@ -230,6 +231,7 @@ namespace SPARK_EDITOR {
 	{
 		auto& inputManager = SPARK_CORE::InputManager::GetInstance();
 		auto& keyboard = inputManager.GetKeyboard();
+		auto& mouse = inputManager.GetMouse();
 
 		// Process Events
 		while (SDL_PollEvent(&m_Event))
@@ -247,6 +249,17 @@ namespace SPARK_EDITOR {
 			case SDL_KEYUP:
 				keyboard.OnKeyReleased(m_Event.key.keysym.sym);
 				break;
+			case SDL_MOUSEBUTTONDOWN:
+				mouse.OnBtnPressed(m_Event.button.button);
+				break;
+			case SDL_MOUSEBUTTONUP:
+				mouse.OnBtnReleased(m_Event.button.button);
+				break;
+			case SDL_MOUSEWHEEL:
+				mouse.SetMouseWheelX(m_Event.wheel.x);
+				mouse.SetMouseWheelY(m_Event.wheel.y);
+			case SDL_MOUSEMOTION:
+				mouse.SetMouseMoving(true);
 			default:
 				break;
 			}
@@ -274,6 +287,8 @@ namespace SPARK_EDITOR {
 		auto& inputManager = SPARK_CORE::InputManager::GetInstance();
 		auto& keyboard = inputManager.GetKeyboard();
 		keyboard.Update();
+		auto& mouse = inputManager.GetMouse();
+		mouse.Update();
 	}
 
 	void Application::Render()

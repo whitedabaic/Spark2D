@@ -88,6 +88,17 @@ main = {
 			elseif Keyboard.just_pressed(KEY_D) then
 				print("Key D was just pressed")
 			end
+
+			if Mouse.just_pressed(LEFT_BTN) then
+				print("Mouse Left Button Preesed")
+			elseif Mouse.just_pressed(MIDDLE_BTN) then
+				print("Mouse MIDDLE Button Preesed")
+			elseif Mouse.just_pressed(RIGHT_BTN) then
+				print("Mouse RIGHT Button Preesed")
+			end
+
+			local mouse_x, mouse_y = Mouse.screen_position()
+			print("Mouse pos[" ..mouse_x ..","..mouse_y.."]")
 		end
 	},
 	[2] = {
