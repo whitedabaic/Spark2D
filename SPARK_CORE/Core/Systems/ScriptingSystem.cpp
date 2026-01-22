@@ -6,6 +6,7 @@
 #include "../ECS/Entity.h"
 
 #include "../Scripting/GlmLuaBindings.h"
+#include "../Scripting/InputManager.h"
 
 #include <Logger/Logger.h>
 
@@ -121,6 +122,7 @@ namespace SPARK_CORE::Systems {
 	void ScriptingSystem::RegisterLuaBindings(sol::state& lua, SPARK_CORE::ECS::Registry& registry)
 	{
 		SPARK_CORE::Scripting::GLMBindings::CreateGLMBinds(lua);
+		SPARK_CORE::InputManager::CreateLuaInputBindings(lua);
 
 		Registry::CreateLuaRegistryBind(lua, registry);
 		Entity::CreateLuaEntityBind(lua, registry);

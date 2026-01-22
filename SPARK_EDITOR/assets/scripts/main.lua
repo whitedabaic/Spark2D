@@ -10,7 +10,7 @@ gEntity2:add_component(Transform(200, 100, 10, 10, 0))
 local sprite2 = gEntity2:add_component(Sprite("red_player", 24.0, 24.0, 0, 0, 0))
 sprite2:generate_uvs()
 
-gEntity2:add_component(Animation(6, 10, 0, false))
+gEntity2:add_component(Animation(4, 5, 0, true))
 
 local sprite = gEntity:add_component(
 	Sprite("castle", 16.0, 16.0, 0, 28, 0)
@@ -79,9 +79,15 @@ main = {
 
 			transform.scale = vec2(scale, scale)
 
-			local sprite2 = gEntity:get_component(Sprite)
-			--print("Texture name: "..sprite2.texture_name)
-
+			if Keyboard.pressed(KEY_W) then
+				print("Key W was just pressed")
+			elseif Keyboard.just_released(KEY_S) then
+				print("Key S was just pressed")
+			elseif Keyboard.just_pressed(KEY_A) then
+				print("Key A was just pressed")
+			elseif Keyboard.just_pressed(KEY_D) then
+				print("Key D was just pressed")
+			end
 		end
 	},
 	[2] = {

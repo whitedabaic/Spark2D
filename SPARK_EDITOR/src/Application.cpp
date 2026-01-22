@@ -22,6 +22,9 @@
 #include <Core/Systems/RenderSystem.h>
 #include <Core/Systems/AnimationSystem.h>
 
+#include <Core/Scripting/InputManager.h>
+#include <Windowing/Inputs/Keyboard.h>
+
 namespace SPARK_EDITOR {
 
     bool Application::Initialize()
@@ -225,6 +228,9 @@ namespace SPARK_EDITOR {
 
 	void Application::ProcessEvents()
 	{
+		auto& inputManager = SPARK_CORE::InputManager::GetInstance();
+		auto& keyboard = inputManager.GetKeyboard();
+
 		// Process Events
 		while (SDL_PollEvent(&m_Event))
 		{
@@ -236,6 +242,10 @@ namespace SPARK_EDITOR {
 			case SDL_KEYDOWN:
 				if (m_Event.key.keysym.sym == SDLK_ESCAPE)
 					m_bIsRunning = false;
+				keyboard.OnKeyPressed(m_Event.key.keysym.sym);
+				break;
+			case SDL_KEYUP:
+				keyboard.OnKeyReleased(m_Event.key.keysym.sym);
 				break;
 			default:
 				break;
@@ -259,6 +269,11 @@ namespace SPARK_EDITOR {
 
 		auto& animationSystem = m_pRegistry->GetContext<std::shared_ptr<SPARK_CORE::Systems::AnimationSystem>>();
 		animationSystem->Update();
+
+		// Update inputs
+		auto& inputManager = SPARK_CORE::InputManager::GetInstance();
+		auto& keyboard = inputManager.GetKeyboard();
+		keyboard.Update();
 	}
 
 	void Application::Render()
