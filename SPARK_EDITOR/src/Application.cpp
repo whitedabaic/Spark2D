@@ -107,18 +107,6 @@ namespace SPARK_EDITOR {
 			return false;
 		}
 
-		if (!assetManager->AddTexture("castle", "./assets/textures/castle.png", true))
-		{
-			SPARK_ERROR("Failed to create and add the texture");
-			return false;
-		}
-
-		if (!assetManager->AddTexture("red_player", "./assets/textures/red_player.png", true))
-		{
-			SPARK_ERROR("Failed to create and add the texture");
-			return false;
-		}
-
 		m_pRegistry = std::make_unique<SPARK_CORE::ECS::Registry>();
 
 		// Create the lua state
@@ -199,6 +187,7 @@ namespace SPARK_EDITOR {
 		}
 
 		SPARK_CORE::Systems::ScriptingSystem::RegisterLuaBindings(*lua, *m_pRegistry);
+		SPARK_CORE::Systems::ScriptingSystem::RegisterLuaFunctions(*lua);
 
 		if (!scriptSystem->LoadMainScript(*lua))
 		{

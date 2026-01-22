@@ -112,6 +112,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <LanguageStandard_C>stdclatest</LanguageStandard_C>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,6 +129,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -163,6 +165,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\scripts\asteroids\assetDefs.lua" />
+    <None Include="assets\scripts\asteroids\entityDefs.lua" />
+    <None Include="assets\scripts\asteroids\utilities.lua" />
     <None Include="assets\scripts\main.lua" />
     <None Include="assets\shaders\basicShader.frag" />
     <None Include="assets\shaders\basicShader.vert" />

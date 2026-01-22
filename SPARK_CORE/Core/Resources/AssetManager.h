@@ -6,6 +6,9 @@
 #include <Rendering/Essentials//Shader.h>
 #include <Rendering/Essentials/Texture.h>
 
+#include "../ECS/Registry.h"
+#include <sol/sol.hpp>
+
 namespace SPARK_RESOURCES {
 	class AssetManager
 	{
@@ -21,5 +24,7 @@ namespace SPARK_RESOURCES {
 
 		bool AddShader(const std::string& shaderName, const std::string& vertexPath, const std::string& fragmentPath);
 		SPARK_RENDERING::Shader& GetShader(const std::string& shaderName);
+
+		static void CreateLuaAssetManager(sol::state& lua, SPARK_CORE::ECS::Registry& registry);
 	};
 }

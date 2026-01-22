@@ -7,7 +7,7 @@
 
 #include "../Scripting/GlmLuaBindings.h"
 #include "../Scripting/InputManager.h"
-
+#include "../Resources/AssetManager.h"
 #include <Logger/Logger.h>
 
 using namespace SPARK_CORE::ECS;
@@ -123,6 +123,7 @@ namespace SPARK_CORE::Systems {
 	{
 		SPARK_CORE::Scripting::GLMBindings::CreateGLMBinds(lua);
 		SPARK_CORE::InputManager::CreateLuaInputBindings(lua);
+		SPARK_RESOURCES::AssetManager::CreateLuaAssetManager(lua, registry);
 
 		Registry::CreateLuaRegistryBind(lua, registry);
 		Entity::CreateLuaEntityBind(lua, registry);
@@ -137,5 +138,25 @@ namespace SPARK_CORE::Systems {
 		Registry::RegisterMetaComponent<TransformComponent>();
 		Registry::RegisterMetaComponent<SpriteComponent>();
 		Registry::RegisterMetaComponent<AnimationComponent>();
+	}
+	void ScriptingSystem::RegisterLuaFunctions(sol::state& lua)
+	{
+		lua.set_function(
+			"run_script", [&](const std::string& path)
+			{
+				try
+				{
+					lua.safe_script_file(path);
+				}
+				catch (const sol::error& error)
+				{
+					auto e = error.what();
+					SPARK_ERROR("Error loading Lua script: {}", e);
+					return false;
+				}
+
+				return true;
+			}
+		);
 	}
 }
