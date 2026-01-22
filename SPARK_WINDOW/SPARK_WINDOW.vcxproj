@@ -71,11 +71,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir).\SPARK_UTILITES;$(SolutionDir).\Dependencies\SDL\include;$(SolutionDir).\SPARK_LOGGER\Logger;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir).\SPARK_UTILITES;$(SolutionDir).\Dependencies\SDL\include;$(SolutionDir).\SPARK_LOGGER;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir).\Dependencies\SDL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir).\SPARK_UTILITES;$(SolutionDir).\Dependencies\SDL\include;$(SolutionDir).\SPARK_LOGGER\Logger;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir).\SPARK_UTILITES;$(SolutionDir).\Dependencies\SDL\include;$(SolutionDir).\SPARK_LOGGER;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir).\Dependencies\SDL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -140,6 +140,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Windowing\Inputs\Button.h" />
+    <ClInclude Include="Windowing\Inputs\Gamepad.h" />
+    <ClInclude Include="Windowing\Inputs\GPButtons.h" />
     <ClInclude Include="Windowing\Inputs\Keys.h" />
     <ClInclude Include="Windowing\Inputs\Keyboard.h" />
     <ClInclude Include="Windowing\Inputs\Mouse.h" />
@@ -156,6 +158,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Windowing\Inputs\Button.cpp" />
+    <ClCompile Include="Windowing\Inputs\Gamepad.cpp" />
     <ClCompile Include="Windowing\Inputs\Keyboard.cpp" />
     <ClCompile Include="Windowing\Inputs\Mouse.cpp" />
     <ClCompile Include="Windowing\Window\Window.cpp" />

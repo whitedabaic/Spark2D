@@ -1,6 +1,6 @@
 #include "Mouse.h"
 #include <SDL.h>
-#include <Logger.h>
+#include <Logger/Logger.h>
 
 namespace SPARK_WINDOWING::Inputs {
 

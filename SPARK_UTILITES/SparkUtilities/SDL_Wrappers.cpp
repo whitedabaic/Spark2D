@@ -10,18 +10,16 @@ void SPARK_UTIL::SDL_Destroyer::operator()(SDL_Window* window) const
 
 void SPARK_UTIL::SDL_Destroyer::operator()(SDL_GameController* controller) const
 {
+    SDL_GameControllerClose(controller);
+    controller = nullptr;
+    std::cout << "Closed SDL Game Controller!" << std::endl;
 }
 
 void SPARK_UTIL::SDL_Destroyer::operator()(SDL_Cursor* cursor) const
 {
 }
 
-Controller make_shared_controller(SDL_GameController* controller)
+Cursor make_shared_cursor(SDL_Cursor* cursor)
 {
-    return Controller();
-}
-
-Controller make_shared_cursor(SDL_Cursor* cursor)
-{
-    return Controller();
+    return Cursor();
 }

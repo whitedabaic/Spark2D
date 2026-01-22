@@ -33,6 +33,12 @@
     <ClInclude Include="Windowing\Inputs\Mouse.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Windowing\Inputs\GPButtons.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Windowing\Inputs\Gamepad.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Windowing\Window\Window.cpp">
@@ -45,6 +51,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Windowing\Inputs\Mouse.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Windowing\Inputs\Gamepad.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

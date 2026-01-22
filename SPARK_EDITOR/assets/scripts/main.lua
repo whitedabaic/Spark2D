@@ -36,6 +36,7 @@ view:for_each(
 main = {
 	[1] = {
 		update = function()
+		--[[
 			if rotation >= 360 then
 				rotation = 0
 			end 
@@ -78,27 +79,24 @@ main = {
 			end 
 
 			transform.scale = vec2(scale, scale)
+			--]]
+			--[[
+			local rstick_LR = Gamepad.get_axis_position(1, 2)
+			print("RSTICK LR value: " ..rstick_LR)
+			local rstick_UD = Gamepad.get_axis_position(1, 3)
+			print("RSTICK UD value: " ..rstick_UD)
 
-			if Keyboard.pressed(KEY_W) then
-				print("Key W was just pressed")
-			elseif Keyboard.just_released(KEY_S) then
-				print("Key S was just pressed")
-			elseif Keyboard.just_pressed(KEY_A) then
-				print("Key A was just pressed")
-			elseif Keyboard.just_pressed(KEY_D) then
-				print("Key D was just pressed")
-			end
+			local lstick_LR = Gamepad.get_axis_position(1, 0)
+			print("LSTICK LR value: " ..lstick_LR)
+			local lstick_UD = Gamepad.get_axis_position(1, 1)
+			print("LSTICK UD value: " ..lstick_UD)
 
-			if Mouse.just_pressed(LEFT_BTN) then
-				print("Mouse Left Button Preesed")
-			elseif Mouse.just_pressed(MIDDLE_BTN) then
-				print("Mouse MIDDLE Button Preesed")
-			elseif Mouse.just_pressed(RIGHT_BTN) then
-				print("Mouse RIGHT Button Preesed")
-			end
-
-			local mouse_x, mouse_y = Mouse.screen_position()
-			print("Mouse pos[" ..mouse_x ..","..mouse_y.."]")
+			local lTrigger = Gamepad.get_axis_position(1, 4)
+			print("LTrigger value: " ..lTrigger)
+			local rTrigger = Gamepad.get_axis_position(1, 5)
+			print("RTrigger value: " ..rTrigger)
+			--]]
+			
 		end
 	},
 	[2] = {

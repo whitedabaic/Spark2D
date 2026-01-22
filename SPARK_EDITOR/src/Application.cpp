@@ -25,6 +25,7 @@
 #include <Core/Scripting/InputManager.h>
 #include <Windowing/Inputs/Keyboard.h>
 #include <Windowing/Inputs/Mouse.h>
+#include <Windowing/Inputs/Gamepad.h>
 
 namespace SPARK_EDITOR {
 
@@ -258,8 +259,28 @@ namespace SPARK_EDITOR {
 			case SDL_MOUSEWHEEL:
 				mouse.SetMouseWheelX(m_Event.wheel.x);
 				mouse.SetMouseWheelY(m_Event.wheel.y);
+				break;
 			case SDL_MOUSEMOTION:
 				mouse.SetMouseMoving(true);
+				break;
+			case SDL_CONTROLLERBUTTONDOWN:
+				inputManager.GamepadBtnPressed(m_Event);
+				break;
+			case SDL_CONTROLLERBUTTONUP:
+				inputManager.GamepadBtnReleased(m_Event);
+				break;
+			case SDL_CONTROLLERDEVICEADDED:
+				inputManager.AddGamepad(m_Event.jdevice.which);
+				break;
+			case SDL_CONTROLLERDEVICEREMOVED:
+				inputManager.RemoveGamepad(m_Event.jdevice.which);
+				break;
+			case SDL_JOYAXISMOTION:
+				inputManager.GamepadAxisValues(m_Event);
+				break;
+			case SDL_JOYHATMOTION:
+				inputManager.GamepadHatValues(m_Event);
+				break;
 			default:
 				break;
 			}
@@ -287,8 +308,11 @@ namespace SPARK_EDITOR {
 		auto& inputManager = SPARK_CORE::InputManager::GetInstance();
 		auto& keyboard = inputManager.GetKeyboard();
 		keyboard.Update();
+
 		auto& mouse = inputManager.GetMouse();
 		mouse.Update();
+
+		inputManager.UpdateGamepads();
 	}
 
 	void Application::Render()

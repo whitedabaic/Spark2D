@@ -8,6 +8,7 @@
 #define SPARK_LOG(x, ...) SPARK_LOGGER::Logger::GetInstance().Log(x, __VA_ARGS__);
 #define SPARK_WARN(x, ...) SPARK_LOGGER::Logger::GetInstance().Warn(x, __VA_ARGS__);
 #define SPARK_ERROR(x, ...) SPARK_LOGGER::Logger::GetInstance().Error(std::source_location::current(), x, __VA_ARGS__);
+#define SPARK_ASSERT(x) assert(x);
 #define SPARK_INIT_LOGS(console, retain) SPARK_LOGGER::Logger::GetInstance().Init(console, retain);
 
 namespace SPARK_LOGGER
