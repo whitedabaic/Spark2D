@@ -166,7 +166,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\scripts\asteroids\assetDefs.lua" />
+    <None Include="assets\scripts\asteroids\asteroid.lua" />
     <None Include="assets\scripts\asteroids\entityDefs.lua" />
+    <None Include="assets\scripts\asteroids\ship.lua" />
     <None Include="assets\scripts\asteroids\utilities.lua" />
     <None Include="assets\scripts\main.lua" />
     <None Include="assets\shaders\basicShader.frag" />

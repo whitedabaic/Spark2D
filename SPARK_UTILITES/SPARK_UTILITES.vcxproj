@@ -142,9 +142,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="SparkUtilities\SDL_Wrappers.h" />
+    <ClInclude Include="SparkUtilities\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="SparkUtilities\SDL_Wrappers.cpp" />
+    <ClCompile Include="SparkUtilities\Timer.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

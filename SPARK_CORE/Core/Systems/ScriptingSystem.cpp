@@ -9,6 +9,7 @@
 #include "../Scripting/InputManager.h"
 #include "../Resources/AssetManager.h"
 #include <Logger/Logger.h>
+#include <SparkUtilities/Timer.h>
 
 using namespace SPARK_CORE::ECS;
 
@@ -119,11 +120,36 @@ namespace SPARK_CORE::Systems {
 		}
 	}
 
+	auto create_timer = [](sol::state& lua) {
+		using namespace SPARK_UTIL;
+		lua.new_usertype<Timer>(
+			"Timer",
+			sol::call_constructor,
+			sol::factories([]() { return Timer{}; }),
+			"start", &Timer::Start,
+			"stop", &Timer::Stop,
+			"pause", &Timer::Pause,
+			"resume", &Timer::Resume,
+			"is_paused", &Timer::IsPaused,
+			"is_running", &Timer::IsRunning,
+			"elapsed_ms", &Timer::ElapsedMS,
+			"elapsed_sec", &Timer::ElapsedSec,
+			"restart", [](Timer& timer) {
+				if (timer.IsRunning())
+					timer.Stop();
+
+				timer.Start();
+			}
+		);
+	};
+
 	void ScriptingSystem::RegisterLuaBindings(sol::state& lua, SPARK_CORE::ECS::Registry& registry)
 	{
 		SPARK_CORE::Scripting::GLMBindings::CreateGLMBinds(lua);
 		SPARK_CORE::InputManager::CreateLuaInputBindings(lua);
 		SPARK_RESOURCES::AssetManager::CreateLuaAssetManager(lua, registry);
+
+		create_timer(lua);
 
 		Registry::CreateLuaRegistryBind(lua, registry);
 		Entity::CreateLuaEntityBind(lua, registry);
