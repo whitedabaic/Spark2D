@@ -16,10 +16,13 @@ AsteroidDefs =
 				height = 98,
 				start_x = 0, start_y = 0,
 				layer = 2
+			},
+			circle_collider = {
+				radius = 59
 			}
 		}, 
 		type = "big",
-		min_speed = 1,
+		min_speed = -2,
 		max_speed = 3,
 	},
 	asteroid_small =
@@ -38,10 +41,13 @@ AsteroidDefs =
 				height = 28,
 				start_x = 0, start_y = 0,
 				layer = 2
+			},
+			circle_collider = {
+				radius = 14
 			}
 		},
 		type = "small",
-		min_speed = 1,
+		min_speed = -4,
 		max_speed = 4,
 	},
 }
@@ -64,6 +70,9 @@ ShipDefs =
 				height = 84,
 				start_x = 0, start_y = 0,
 				layer = 2
+			},
+			circle_collider = {
+				radius = 42
 			}
 		}
 	}

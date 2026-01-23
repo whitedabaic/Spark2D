@@ -1,4 +1,6 @@
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\ECS\Components\AnimationComponent.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\AnimationComponent.obj
+F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\ECS\Components\BoxColliderComponent.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\BoxColliderComponent.obj
+F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\ECS\Components\CircleColliderComponent.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\CircleColliderComponent.obj
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\ECS\Components\SpriteComponent.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\SpriteComponent.obj
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\ECS\Components\TransformComponent.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\TransformComponent.obj
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\ECS\Entity.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\Entity.obj
