@@ -4,3 +4,4 @@
 **.vcxproj.filters
 **.vcxproj.user
 **.csproj
+**/x64

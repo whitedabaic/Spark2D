@@ -6,6 +6,20 @@ using namespace SPARK_RESOURCES;
 
 void SPARK_CORE::ECS::SpriteComponent::CreateSpriteLuaBind(sol::state& lua, SPARK_CORE::ECS::Registry& registry)
 {
+	lua.new_usertype<SPARK_RENDERING::Color>(
+		"Color",
+		sol::call_constructor,
+		sol::factories(
+			[](GLubyte r, GLubyte g, GLubyte b, GLubyte a) {
+				return SPARK_RENDERING::Color{ .r = r, .g = g, .b = b, .a = a };
+			}
+		),
+		"r", &SPARK_RENDERING::Color::r,
+		"g", &SPARK_RENDERING::Color::g,
+		"b", &SPARK_RENDERING::Color::b,
+		"a", &SPARK_RENDERING::Color::a
+	);
+
 	lua.new_usertype<SpriteComponent>(
 		"Sprite",
 		"type_id", &entt::type_hash<SpriteComponent>::value,
@@ -30,6 +44,7 @@ void SPARK_CORE::ECS::SpriteComponent::CreateSpriteLuaBind(sol::state& lua, SPAR
 		"start_x", &SpriteComponent::start_x,
 		"start_y", &SpriteComponent::start_y,
 		"layer", &SpriteComponent::layer,
+		"color", &SpriteComponent::color,
 		"generate_uvs", [&](SpriteComponent& sprite) {
 			auto& assetManager = registry.GetContext<std::shared_ptr<AssetManager>>();
 			auto& texture = assetManager->GetTexture(sprite.texture_name);
