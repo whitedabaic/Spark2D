@@ -62,17 +62,24 @@ ShipDefs =
 			transform = { 
 				position = { x = 320, y = 240},
 				scale = { x = 1, y = 1},
-				rotation = 90
+				rotation = 0
 			},
 			sprite = {
 				asset_name = "ship",
-				width = 103,
-				height = 84,
+				width = 84,
+				height = 104,
 				start_x = 0, start_y = 0,
 				layer = 2
 			},
 			circle_collider = {
 				radius = 42
+			},
+			animation = {
+				num_frames = 0,
+				frame_rate = 0,
+				frame_offset = 0,
+				bVertical = false,
+				bLooped = false
 			}
 		}
 	}
@@ -92,8 +99,8 @@ ProjectileDefs =
 			},
 			sprite = {
 				asset_name = "proj_1",
-				width = 13,
-				height = 37,
+				width = 37,
+				height = 13,
 				start_x = 0, start_y = 0,
 				layer = 2
 			},
@@ -104,4 +111,85 @@ ProjectileDefs =
 		life_time = 2000,
 		proj_speed = 10
 	}
+}
+
+HudDefs =
+{
+	lives = 
+	{
+		group = "lives",
+		components =
+		{
+			transform = { 
+				position = { x = 0, y = 0},
+				scale = { x = 1, y = 1},
+				rotation = 0
+			},
+			sprite = {
+				asset_name = "lives",
+				width = 37,
+				height = 26,
+				start_x = 0, start_y = 0,
+				layer = 10
+			}
+		}
+	},
+	score = 
+	{
+		group = "score",
+		components =
+		{
+			transform = { 
+				position = { x = 200, y = 0},
+				scale = { x = 4, y = 4},
+				rotation = 0
+			},
+			sprite = {
+				asset_name = "score",
+				width = 48,
+				height = 16,
+				start_x = 0, start_y = 0,
+				layer = 10
+			}
+		}
+	},
+	number = 
+	{
+		group = "numbers",
+		components =
+		{
+			transform = { 
+				position = { x = 380, y = 0},
+				scale = { x = 4, y = 4},
+				rotation = 0
+			},
+			sprite = {
+				asset_name = "numbers",
+				width = 16,
+				height = 16,
+				start_x = 0, start_y = 0,
+				layer = 10
+			}
+		}
+	},
+	game_over = 
+	{
+		tag = "game_over",
+		components =
+		{
+			transform = { 
+				position = { x = (WINDOW_WIDTH / 2) - 240, y = (WINDOW_HEIGHT / 2) - 48},
+				scale = { x = 6, y = 6},
+				rotation = 0
+			},
+			sprite = {
+				asset_name = "game_over",
+				width = 80,
+				height = 16,
+				start_x = 0, start_y = 0,
+				layer = 10,
+				hidden = true
+			}
+		}
+	},
 }

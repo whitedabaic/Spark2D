@@ -7,19 +7,26 @@ void SPARK_CORE::ECS::AnimationComponent::CreateAnimationLuaBind(sol::state& lua
 		"Animation",
 		"type_id", &entt::type_hash<AnimationComponent>::value,
 		sol::call_constructor,
-		sol::factories([](int numFrames, int frameRate, int frameOffset, bool bVertical) {
+		sol::factories([](int numFrames, int frameRate, int frameOffset, bool bVertical, bool bLooped) {
 			return AnimationComponent{
 				.numFrames = numFrames,
 				.frameRate = frameRate,
 				.frameOffset = frameOffset,
-				.bVertical = bVertical
+				.bVertical = bVertical,
+				.bLooped = bLooped
 			};
 			}
 		),
 		"num_frames", &AnimationComponent::numFrames,
 		"frame_rate", &AnimationComponent::frameRate,
 		"frame_offset", &AnimationComponent::frameOffset,
-		"current_frames", &AnimationComponent::currentFrame,
-		"bVertical", &AnimationComponent::bVertical
+		"current_frame", &AnimationComponent::currentFrame,
+		"start_time", &AnimationComponent::startTime,
+		"bVertical", &AnimationComponent::bVertical,
+		"bLooped", &AnimationComponent::bLooped,
+		"reset", [](AnimationComponent& anim) {
+			anim.currentFrame = 0;
+			anim.startTime = SDL_GetTicks();
+		}
 	);
 }

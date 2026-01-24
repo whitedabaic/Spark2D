@@ -21,18 +21,18 @@ namespace SPARK_CORE::Systems {
 		auto& camera = m_Registry.GetContext<std::shared_ptr<Camera2D>>();
 		auto& assetManager = m_Registry.GetContext<std::shared_ptr<AssetManager>>();
 
-		auto& spriteShader = assetManager->GetShader("basic");
+		const auto& spriteShader = assetManager->GetShader("basic");
 		auto cam_mat = camera->GetCameraMatrix();
 
-		if (spriteShader.ShaderProgramID() == 0)
+		if (spriteShader->ShaderProgramID() == 0)
 		{
 			SPARK_ERROR("Sprite shader program has not been set correctly!");
 			return;
 		}
 
 		// enable the shader
-		spriteShader.Enable();
-		spriteShader.SetUniformMat4("uProjection", cam_mat);
+		spriteShader->Enable();
+		spriteShader->SetUniformMat4("uProjection", cam_mat);
 
 		m_pBatchRenderer->Begin();
 		auto view = m_Registry.GetRegistry().view<SpriteComponent, TransformComponent>();
@@ -42,11 +42,11 @@ namespace SPARK_CORE::Systems {
 			const auto& transform = view.get<TransformComponent>(entity);
 			const auto& sprite = view.get<SpriteComponent>(entity);
 
-			if (sprite.texture_name.empty())
+			if (sprite.texture_name.empty() || sprite.bHidden)
 				continue;
 
 			const auto& texture = assetManager->GetTexture(sprite.texture_name);
-			if (texture.GetID() == 0)
+			if (!texture)
 			{
 				SPARK_ERROR("Texture [{0}] was not created correctly!", sprite.texture_name);
 				return;
@@ -73,12 +73,12 @@ namespace SPARK_CORE::Systems {
 
 				model = glm::translate(model, glm::vec3{ -transform.position, 0.f });
 			}
-			m_pBatchRenderer->AddSprite(spriteRect, uvRect, texture.GetID(), sprite.layer, model, sprite.color);
+			m_pBatchRenderer->AddSprite(spriteRect, uvRect, texture->GetID(), sprite.layer, model, sprite.color);
 		}
 
 		m_pBatchRenderer->End();
 		m_pBatchRenderer->Render();
 
-		spriteShader.Disable();
+		spriteShader->Disable();
 	}
 }

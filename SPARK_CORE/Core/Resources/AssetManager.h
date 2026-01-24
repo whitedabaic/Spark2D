@@ -20,10 +20,10 @@ namespace SPARK_RESOURCES {
 		~AssetManager() = default;
 
 		bool AddTexture(const std::string& textureName, const std::string& texturePath, bool pixelArt = true);
-		const SPARK_RENDERING::Texture& GetTexture(const std::string& textureName);
+		std::shared_ptr<SPARK_RENDERING::Texture> GetTexture(const std::string& textureName);
 
 		bool AddShader(const std::string& shaderName, const std::string& vertexPath, const std::string& fragmentPath);
-		SPARK_RENDERING::Shader& GetShader(const std::string& shaderName);
+		std::shared_ptr<SPARK_RENDERING::Shader> GetShader(const std::string& shaderName);
 
 		static void CreateLuaAssetManager(sol::state& lua, SPARK_CORE::ECS::Registry& registry);
 	};

@@ -13,10 +13,10 @@ namespace SPARK_RESOURCES {
             return false;
 		}
         
-        auto texture = std::move(SPARK_RENDERING::TextureLoader::Create(
+        auto texture = SPARK_RENDERING::TextureLoader::Create(
 			pixelArt ? SPARK_RENDERING::Texture::TextureType::PIXEL : SPARK_RENDERING::Texture::TextureType::BLENDED,
             texturePath
-        ));
+        );
 
         if (!texture)
         {
@@ -28,16 +28,16 @@ namespace SPARK_RESOURCES {
         return true;
     }
 
-    const SPARK_RENDERING::Texture& AssetManager::GetTexture(const std::string& textureName)
+    std::shared_ptr<SPARK_RENDERING::Texture> AssetManager::GetTexture(const std::string& textureName)
     {
 		auto texItr = m_mapTextures.find(textureName);
         if (texItr == m_mapTextures.end())
         {
             SPARK_ERROR("Failed to get texture [{0}] -- Does not exist!", textureName);
-			return SPARK_RENDERING::Texture();
+			return nullptr;
         }
         
-        return *texItr->second;
+        return texItr->second;
     }
 
     bool AssetManager::AddShader(const std::string& shaderName, const std::string& vertexPath, const std::string& fragmentPath)
@@ -62,17 +62,16 @@ namespace SPARK_RESOURCES {
         return true;
     }
 
-    SPARK_RENDERING::Shader& AssetManager::GetShader(const std::string& shaderName)
+    std::shared_ptr<SPARK_RENDERING::Shader> AssetManager::GetShader(const std::string& shaderName)
     {
         auto shaderItr = m_mapShaders.find(shaderName);
         if (shaderItr == m_mapShaders.end())
         {
             SPARK_ERROR("Failed to get shader [{0}] -- Does not exist!", shaderName);
-			SPARK_RENDERING::Shader shader{};
-            return shader;
+            return nullptr;
         }
 
-        return *shaderItr->second;
+        return shaderItr->second;
     }
 
     void AssetManager::CreateLuaAssetManager(sol::state& lua, SPARK_CORE::ECS::Registry& registry)
