@@ -38,6 +38,14 @@ namespace SPARK_WINDOWING
 	Window::~Window()
 	{
 	}
+
+	void Window::SetPosition(int x, int y)
+	{
+		SDL_SetWindowPosition(m_pWindow.get(), x, y);
+		m_XPos = x;
+		m_YPos = y;
+	}
+
 	inline void Window::SetWindowName(const std::string& name)
 	{
 		m_sTitle = name;

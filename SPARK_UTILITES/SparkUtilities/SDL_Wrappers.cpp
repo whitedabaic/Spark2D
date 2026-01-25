@@ -30,8 +30,3 @@ void SPARK_UTIL::SDL_Destroyer::operator()(Mix_Music* music) const
 void SPARK_UTIL::SDL_Destroyer::operator()(SDL_Cursor* cursor) const
 {
 }
-
-Cursor make_shared_cursor(SDL_Cursor* cursor)
-{
-    return Cursor();
-}

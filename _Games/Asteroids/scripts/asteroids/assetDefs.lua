@@ -17,7 +17,16 @@ AssetDefs =
 	music =
 	{
 		{ name = "space", 			path = "../_Games/Asteroids/sounds/space.mp3"},
+		{ name = "game_over", 			path = "../_Games/Asteroids/sounds/game_over.mp3"},
 
+	},
+
+	sound_fx =
+	{
+		{ name = "big_ast_explosion", 			path = "../_Games/Asteroids/sounds/explode.wav"},
+		{ name = "small_ast_explosion", 			path = "../_Games/Asteroids/sounds/explodemini.wav"},
+		{ name = "ship_explosion", 			path = "../_Games/Asteroids/sounds/ship_explosion.wav"},
+		{ name = "laser", 			path = "../_Games/Asteroids/sounds/sfx_laser1.wav"},
 	}
 }
 
@@ -35,6 +44,14 @@ function LoadAssets()
 			print("Failed to load music [" ..v.name .."] at path [" ..v.path .."]")
 		else
 			print("Loaded Music [" ..v.name .."]")
+		end
+	end
+
+	for k, v in pairs(AssetDefs.sound_fx) do
+		if not AssetManager.add_soundfx(v.name, v.path) then
+			print("Failed to load SoundFx [" ..v.name .."] at path [" ..v.path .."]")
+		else
+			print("Loaded SoundFx [" ..v.name .."]")
 		end
 	end
 end

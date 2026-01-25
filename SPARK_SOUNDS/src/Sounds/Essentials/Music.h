@@ -17,7 +17,6 @@ namespace SPARK_SOUNDS{
 		inline const std::string& GetDescription() const { return m_Params.description; }
 		inline const double GetDuration() const { return m_Params.duration; }
 
-		// inline Mix_Music* GetMusicPtr() const { if (!m_pMusic) return nullptr;return m_pMusic.get(); }
 		inline Mix_Music* GetMusicPtr() const { return m_pMusic ? m_pMusic.get() : nullptr; }
 	};
 }

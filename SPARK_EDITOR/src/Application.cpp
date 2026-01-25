@@ -29,6 +29,7 @@
 
 // Add sounds
 #include <Sounds/MusicPlayer/MusicPlayer.h>
+#include <Sounds/SoundPlayer/SoundFxPlayer.h>
 
 namespace SPARK_EDITOR {
 
@@ -71,7 +72,7 @@ namespace SPARK_EDITOR {
 			"Test Window", 
 			640, 480, 
 			SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 
-			true, SDL_WINDOW_OPENGL);
+			true, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 
 		if (!m_pWindow->GetWindow())
 		{
@@ -181,6 +182,19 @@ namespace SPARK_EDITOR {
 			return false;
 		}
 
+		auto soundFxPlayer = std::make_shared<SPARK_SOUNDS::SoundFxPlayer>();
+		if (!soundFxPlayer)
+		{
+			SPARK_ERROR("Failed to create the SoundFx Player");
+			return false;
+		}
+
+		if (!m_pRegistry->AddToContext<std::shared_ptr<SPARK_SOUNDS::SoundFxPlayer>>(soundFxPlayer))
+		{
+			SPARK_ERROR("Failed to add the SoundFx Player to the Registry Context!");
+			return false;
+		}
+
 		// Create a temp camera
 		auto camera = std::make_shared<SPARK_RENDERING::Camera2D>();
 
@@ -286,6 +300,16 @@ namespace SPARK_EDITOR {
 			case SDL_JOYHATMOTION:
 				inputManager.GamepadHatValues(m_Event);
 				break;
+			case SDL_WINDOWEVENT:
+				switch (m_Event.window.event)
+				{
+				case SDL_WINDOWEVENT_SIZE_CHANGED:
+					m_pWindow->SetWidth(m_Event.window.data1);
+					m_pWindow->SetHeight(m_Event.window.data2);
+					break;
+				default:
+					break;
+				}
 			default:
 				break;
 			}

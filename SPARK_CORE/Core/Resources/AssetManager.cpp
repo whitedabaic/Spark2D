@@ -122,6 +122,48 @@ namespace SPARK_RESOURCES {
         return musicItr->second;
     }
 
+    bool AssetManager::AddSoundFx(const std::string& soundFxName, const std::string& filepath)
+    {
+        if (m_mapSoundFx.find(soundFxName) != m_mapSoundFx.end())
+        {
+            SPARK_ERROR("Failed to add soundfx [{}] -- Already exists!", soundFxName);
+            return false;
+        }
+
+        Mix_Chunk* chunk = Mix_LoadWAV(filepath.c_str());
+
+        if (!chunk)
+        {
+            std::string error{ Mix_GetError() };
+            SPARK_ERROR("Failed to load [{}] at path [{}] -- Error: {}", soundFxName, filepath, error);
+            return false;
+        }
+
+        SPARK_SOUNDS::SoundParams params{
+            .name = soundFxName,
+            .filename = filepath,
+            .duration = chunk->alen / 179.4
+        };
+
+        auto pSoundFx = std::make_shared<SPARK_SOUNDS::SoundFX>(params, SoundFxPtr{ chunk });
+        m_mapSoundFx.emplace(soundFxName, std::move(pSoundFx));
+
+        return true;
+    }
+
+    std::shared_ptr<SPARK_SOUNDS::SoundFX> AssetManager::GetSoundFx(const std::string& soundFxName)
+    {
+        auto soundItr = m_mapSoundFx.find(soundFxName);
+        if (soundItr == m_mapSoundFx.end())
+        {
+            SPARK_ERROR("Failed to get SoundFX [{}] -- Does Not exist!", soundFxName);
+            return nullptr;
+        }
+
+        return soundItr->second;
+    }
+
+
     void AssetManager::CreateLuaAssetManager(sol::state& lua, SPARK_CORE::ECS::Registry& registry)
     {
         auto& asset_manager = registry.GetContext<std::shared_ptr<AssetManager>>();
@@ -141,6 +183,10 @@ namespace SPARK_RESOURCES {
             "add_music", [&](const std::string& musicName, const std::string& filepath)
             {
                 return asset_manager->AddMusic(musicName, filepath);
+            },
+            "add_soundfx", [&](const std::string& soundFxName, const std::string& filepath)
+            {
+                return asset_manager->AddSoundFx(soundFxName, filepath);
             }
         );
     }

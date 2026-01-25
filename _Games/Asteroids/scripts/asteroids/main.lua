@@ -13,7 +13,7 @@ gCollisionSystem = CollisionSystem:Create()
 gHud = Hud:Create()
 
 bAsteroidsLoaded = true
-
+Music.play("space")
 function RunAsteroids()
 	gShip:UpdateShip()
 	UpdateAsteroids()
