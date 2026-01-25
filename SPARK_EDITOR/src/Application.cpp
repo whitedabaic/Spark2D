@@ -27,6 +27,9 @@
 #include <Windowing/Inputs/Mouse.h>
 #include <Windowing/Inputs/Gamepad.h>
 
+// Add sounds
+#include <Sounds/MusicPlayer/MusicPlayer.h>
+
 namespace SPARK_EDITOR {
 
     bool Application::Initialize()
@@ -162,6 +165,19 @@ namespace SPARK_EDITOR {
 		if (!m_pRegistry->AddToContext<std::shared_ptr<SPARK_CORE::Systems::AnimationSystem>>(animationSystem))
 		{
 			SPARK_ERROR("Failed to add the animation system to the registry context!");
+			return false;
+		}
+
+		auto musicPlayer = std::make_shared<SPARK_SOUNDS::MusicPlayer>();
+		if (!musicPlayer)
+		{
+			SPARK_ERROR("Failed to create the Music Player");
+			return false;
+		}
+
+		if (!m_pRegistry->AddToContext<std::shared_ptr<SPARK_SOUNDS::MusicPlayer>>(musicPlayer))
+		{
+			SPARK_ERROR("Failed to add the Music Player to the Registry Context!");
 			return false;
 		}
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include <SDL_mixer.h>
 #include <memory>
 
 namespace SPARK_UTIL {
@@ -7,6 +8,8 @@ namespace SPARK_UTIL {
 	{
 		void operator()(SDL_Window* window) const;
 		void operator()(SDL_GameController* controller) const;
+		void operator()(Mix_Chunk* chunk) const;
+		void operator()(Mix_Music* music) const;
 		void operator()(SDL_Cursor* cursor) const;
 	};
 }
@@ -21,3 +24,6 @@ typedef std::shared_ptr<SDL_Cursor> Cursor;
 static Cursor make_shared_cursor(SDL_Cursor* cursor);
 
 typedef std::unique_ptr<SDL_Window, SPARK_UTIL::SDL_Destroyer> WindowPtr;
+
+typedef std::unique_ptr<Mix_Chunk, SPARK_UTIL::SDL_Destroyer> SoundFxPtrPtr;
+typedef std::unique_ptr<Mix_Music, SPARK_UTIL::SDL_Destroyer> MusicPtr;

@@ -21,6 +21,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SPARK_CORE", "SPARK_CORE\SP
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "_Games", "_Games\_Games.vcxproj", "{4E06BCBA-F6EC-472F-AA21-B4AF9E1077BE}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SPARK_SOUNDS", "SPARK_SOUNDS\SPARK_SOUNDS.vcxproj", "{BDE76A54-FA69-4201-A34D-B972CF5A232D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -101,6 +103,14 @@ Global
 		{4E06BCBA-F6EC-472F-AA21-B4AF9E1077BE}.Release|x64.Build.0 = Release|x64
 		{4E06BCBA-F6EC-472F-AA21-B4AF9E1077BE}.Release|x86.ActiveCfg = Release|Win32
 		{4E06BCBA-F6EC-472F-AA21-B4AF9E1077BE}.Release|x86.Build.0 = Release|Win32
+		{BDE76A54-FA69-4201-A34D-B972CF5A232D}.Debug|x64.ActiveCfg = Debug|x64
+		{BDE76A54-FA69-4201-A34D-B972CF5A232D}.Debug|x64.Build.0 = Debug|x64
+		{BDE76A54-FA69-4201-A34D-B972CF5A232D}.Debug|x86.ActiveCfg = Debug|Win32
+		{BDE76A54-FA69-4201-A34D-B972CF5A232D}.Debug|x86.Build.0 = Debug|Win32
+		{BDE76A54-FA69-4201-A34D-B972CF5A232D}.Release|x64.ActiveCfg = Release|x64
+		{BDE76A54-FA69-4201-A34D-B972CF5A232D}.Release|x64.Build.0 = Release|x64
+		{BDE76A54-FA69-4201-A34D-B972CF5A232D}.Release|x86.ActiveCfg = Release|Win32
+		{BDE76A54-FA69-4201-A34D-B972CF5A232D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

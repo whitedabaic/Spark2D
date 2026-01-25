@@ -5,3 +5,4 @@
 **.vcxproj.user
 **.csproj
 **/x64
+./x64/

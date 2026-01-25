@@ -2,6 +2,9 @@
 <Project>
   <ProjectOutputs>
     <ProjectOutput>
+      <FullPath>F:\VisualStudioCode\Spark2D\x64\Debug\_Games.exe</FullPath>
+    </ProjectOutput>
+    <ProjectOutput>
       <FullPath>F:\VisualStudioCode\Spark2D\x64\Debug\SPARK_EDITOR.exe</FullPath>
     </ProjectOutput>
   </ProjectOutputs>

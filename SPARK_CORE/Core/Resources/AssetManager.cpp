@@ -74,6 +74,54 @@ namespace SPARK_RESOURCES {
         return shaderItr->second;
     }
 
+    bool AssetManager::AddMusic(const std::string& musicName, const std::string& filepath)
+    {
+        if (m_mapMusic.find(musicName) != m_mapMusic.end())
+        {
+            SPARK_ERROR("Failed to add music [{}] -- Aleady exists!", musicName);
+            return false;
+        }
+
+        Mix_Music* music = Mix_LoadMUS(filepath.c_str());
+
+        if (!music)
+        {
+            std::string error{ Mix_GetError() };
+            SPARK_ERROR("Failed to load [{}] at path [{}] -- Mixer Error: {}", musicName, filepath, error);
+            return false;
+        }
+
+        // Create the sound parameters
+        SPARK_SOUNDS::SoundParams params{
+            .name = musicName,
+            .filename = filepath,
+            .duration = Mix_MusicDuration(music)
+        };
+
+        // Create the music Pointer
+        auto musicPtr = std::make_shared<SPARK_SOUNDS::Music>(params, MusicPtr{ music });
+        if (!musicPtr)
+        {
+            SPARK_ERROR("Failed to create the music ptr for [{}]", musicName);
+            return false;
+        }
+        m_mapMusic.emplace(musicName, std::move(musicPtr));
+
+        return true;
+    }
+
+    std::shared_ptr<SPARK_SOUNDS::Music> AssetManager::GetMusic(const std::string& musicName)
+    {
+        auto musicItr = m_mapMusic.find(musicName);
+        if (musicItr == m_mapMusic.end())
+        {
+            SPARK_ERROR("Failed to get [{}] -- Does not exist!", musicName);
+            return nullptr;
+        }
+
+        return musicItr->second;
+    }
+
     void AssetManager::CreateLuaAssetManager(sol::state& lua, SPARK_CORE::ECS::Registry& registry)
     {
         auto& asset_manager = registry.GetContext<std::shared_ptr<AssetManager>>();
@@ -89,6 +137,10 @@ namespace SPARK_RESOURCES {
             "add_texture", [&](const std::string assetName, const std::string& filepath, bool pixel_art)
             {
                 return asset_manager->AddTexture(assetName, filepath, pixel_art);
+            },
+            "add_music", [&](const std::string& musicName, const std::string& filepath)
+            {
+                return asset_manager->AddMusic(musicName, filepath);
             }
         );
     }

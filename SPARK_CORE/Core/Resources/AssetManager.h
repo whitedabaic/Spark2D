@@ -6,6 +6,8 @@
 #include <Rendering/Essentials//Shader.h>
 #include <Rendering/Essentials/Texture.h>
 
+#include <Sounds/Essentials/Music.h>
+
 #include "../ECS/Registry.h"
 #include <sol/sol.hpp>
 
@@ -15,6 +17,8 @@ namespace SPARK_RESOURCES {
 	private:
 		std::map<std::string, std::shared_ptr<SPARK_RENDERING::Texture>> m_mapTextures{};
 		std::map<std::string, std::shared_ptr<SPARK_RENDERING::Shader>> m_mapShaders{};
+
+		std::map<std::string, std::shared_ptr<SPARK_SOUNDS::Music>> m_mapMusic{};
 	public:
 		AssetManager() = default;
 		~AssetManager() = default;
@@ -24,6 +28,9 @@ namespace SPARK_RESOURCES {
 
 		bool AddShader(const std::string& shaderName, const std::string& vertexPath, const std::string& fragmentPath);
 		std::shared_ptr<SPARK_RENDERING::Shader> GetShader(const std::string& shaderName);
+
+		bool AddMusic(const std::string& musicName, const std::string& filepath);
+		std::shared_ptr<SPARK_SOUNDS::Music> GetMusic(const std::string& musicName);
 
 		static void CreateLuaAssetManager(sol::state& lua, SPARK_CORE::ECS::Registry& registry);
 	};

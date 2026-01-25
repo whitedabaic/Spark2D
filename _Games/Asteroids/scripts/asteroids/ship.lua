@@ -186,7 +186,7 @@ function Ship:Reset()
 	-- Reset the Sprite and Box collider 
 	local ship = Entity(self.m_EntityID)
 	local sprite = ship:get_component(Sprite)
-	sprite.bHidden = false 
+	sprite.hidden = false 
 
 	local circle_collider = ship:get_component(CircleCollider)
 	circle_collider.bColliding = false
