@@ -182,11 +182,19 @@
     <None Include="assets\scripts\asteroids\ship.lua" />
     <None Include="assets\scripts\asteroids\utilities.lua" />
     <None Include="assets\scripts\main.lua" />
+    <None Include="assets\scripts\TestProject\assetDefs.lua" />
+    <None Include="assets\scripts\TestProject\testmap.lua" />
+    <None Include="assets\scripts\utilities.lua" />
     <None Include="assets\shaders\basicShader.frag" />
     <None Include="assets\shaders\basicShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Application.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\textures\Atlas-Props.png" />
+    <Image Include="assets\textures\collider32.png" />
+    <Image Include="assets\textures\grass.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
