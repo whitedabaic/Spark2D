@@ -10,6 +10,8 @@
 #include <Rendering/Essentials/TextureLoader.h>
 #include <Rendering/Essentials/Vertex.h>
 #include <Rendering/Core/Camera2D.h>
+#include <Rendering/Core/Renderer.h>
+
 #include <Logger/Logger.h>
 #include <Core/ECS/Entity.h>
 #include <Core/ECS/Components/SpriteComponent.h>
@@ -100,6 +102,8 @@ namespace SPARK_EDITOR {
 			return false;
 		}
 
+		auto renderer = std::make_shared<SPARK_RENDERING::Renderer>();
+
 		// Enable Alpha Blending
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -112,6 +116,12 @@ namespace SPARK_EDITOR {
 		}
 
 		m_pRegistry = std::make_unique<SPARK_CORE::ECS::Registry>();
+
+		if (!m_pRegistry->AddToContext<std::shared_ptr<SPARK_RENDERING::Renderer>>(renderer))
+		{
+			SPARK_ERROR("Failed to add the renderer to the registry context!");
+			return false;
+		}
 
 		// Create the lua state
 		auto lua = std::make_shared<sol::state>();
@@ -225,6 +235,13 @@ namespace SPARK_EDITOR {
 			return false;
 		}
 
+		renderer->DrawLine(
+			SPARK_RENDERING::Line{
+				.p1 = glm::vec2{50.f},
+				.p2 = glm::vec2{200.f},
+				.color = SPARK_RENDERING::Color{255, 0, 0, 255} }
+		);
+
 		return true;
 	}
 
@@ -240,7 +257,13 @@ namespace SPARK_EDITOR {
 
 		if (!assetManager->AddShader("basic", "assets/shaders/basicShader.vert", "assets/shaders/basicShader.frag"))
 		{
-			SPARK_ERROR("Failed to add the shader to the asset manager");
+			SPARK_ERROR("Failed to add the basic shader to the asset manager");
+			return false;
+		}
+
+		if (!assetManager->AddShader("color", "assets/shaders/colorShader.vert", "assets/shaders/colorShader.frag"))
+		{
+			SPARK_ERROR("Failed to add the color shader to the asset manager");
 			return false;
 		}
 
@@ -347,6 +370,11 @@ namespace SPARK_EDITOR {
 	void Application::Render()
 	{
 		auto& renderSystem = m_pRegistry->GetContext<std::shared_ptr<SPARK_CORE::Systems::RenderSystem>>();
+		auto& camera = m_pRegistry->GetContext<std::shared_ptr<SPARK_RENDERING::Camera2D>>();
+		auto& renderer = m_pRegistry->GetContext<std::shared_ptr<SPARK_RENDERING::Renderer>>();
+		auto& assetManager = m_pRegistry->GetContext<std::shared_ptr<SPARK_RESOURCES::AssetManager>>();
+
+		auto shader = assetManager->GetShader("color");
 
 		glViewport(
 			0, 0,
@@ -360,6 +388,8 @@ namespace SPARK_EDITOR {
 		auto& scriptSystem = m_pRegistry->GetContext<std::shared_ptr<SPARK_CORE::Systems::ScriptingSystem>>();
 		scriptSystem->Render();
 		renderSystem->Update();
+		renderer->DrawLines(*shader, *camera);
+
 
 		SDL_GL_SwapWindow(m_pWindow->GetWindow().get());
 	}
