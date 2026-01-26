@@ -7,7 +7,7 @@ namespace SPARK_CORE::Systems {
 	{
 	private:
 		SPARK_CORE::ECS::Registry& m_Registry;
-		std::unique_ptr<SPARK_RENDERING::BatchRenderer> m_pBatchRenderer;
+		std::unique_ptr<SPARK_RENDERING::SpriteBatchRenderer> m_pBatchRenderer;
 
 	public:
 		RenderSystem(SPARK_CORE::ECS::Registry& registry);
