@@ -235,12 +235,7 @@ namespace SPARK_EDITOR {
 			return false;
 		}
 
-		renderer->DrawLine(
-			SPARK_RENDERING::Line{
-				.p1 = glm::vec2{50.f},
-				.p2 = glm::vec2{200.f},
-				.color = SPARK_RENDERING::Color{255, 0, 0, 255} }
-		);
+		glLineWidth(4.f);
 
 		return true;
 	}
@@ -382,7 +377,7 @@ namespace SPARK_EDITOR {
 			m_pWindow->GetHeight()
 		);
 
-		glClearColor(1.f, 1.f, 1.f, 1.f);
+		glClearColor(0.f, 0.f, 0.f, 0.f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		auto& scriptSystem = m_pRegistry->GetContext<std::shared_ptr<SPARK_CORE::Systems::ScriptingSystem>>();

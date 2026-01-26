@@ -41,6 +41,9 @@ namespace SPARK_RENDERING {
 		void SetBlendCapability(BlendingFactors sFactor, BlendingFactors dFactor);
 		void SetViewport(GLint x, GLint y, GLsizei width, GLsizei height);
 
+		void SetCapability(GLCapability capability, bool enable);
+		bool IsCapabilityEnabled(GLCapability capability) const;
+
 		// Primitive Draw calls
 		void DrawLine(const Line& line);
 		void DrawLine(const glm::vec2& p1, const glm::vec2& p2, const Color& color, float lineWidth = 1.f);
@@ -53,9 +56,8 @@ namespace SPARK_RENDERING {
 		void DrawCircle(const glm::vec2& position, float radius, const Color& color, float thickness = 1.f);
 
 		void DrawLines(class Shader& shader, class Camera2D& camera);
-		void DrawRects();
-		void DrawFilledRects();
-		void DrawCircles();
+		void DrawFilledRects(class Shader& shader, class Camera2D& camera);
+		void DrawCircles(class Shader& shader, class Camera2D& camera);
 
 		void ClearPrimitives();
 	};

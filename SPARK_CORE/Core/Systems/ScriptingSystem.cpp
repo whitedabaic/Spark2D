@@ -10,6 +10,7 @@
 #include "../Scripting/GlmLuaBindings.h"
 #include "../Scripting/InputManager.h"
 #include "../Scripting/SoundBindings.h"
+#include "../Scripting/RendererBindings.h"
 
 #include "../Resources/AssetManager.h"
 #include <Logger/Logger.h>
@@ -153,6 +154,7 @@ namespace SPARK_CORE::Systems {
 		SPARK_CORE::InputManager::CreateLuaInputBindings(lua);
 		SPARK_RESOURCES::AssetManager::CreateLuaAssetManager(lua, registry);
 		SPARK_CORE::Scripting::SoundBinder::CreateSoundBind(lua, registry);
+		SPARK_CORE::Scripting::RendererBinder::CreateRenderingBind(lua, registry);
 
 		create_timer(lua);
 
