@@ -1,6 +1,7 @@
 #include "AssetManager.h"
 #include <Rendering/Essentials/TextureLoader.h>
 #include <Rendering/Essentials/ShaderLoader.h>
+#include <Rendering/Essentials/FontLoader.h>
 #include <Logger/Logger.h>
 
 namespace SPARK_RESOURCES {
@@ -38,6 +39,60 @@ namespace SPARK_RESOURCES {
         }
         
         return texItr->second;
+    }
+
+    bool AssetManager::AddFont(const std::string& fontName, const std::string& fontPath, float fontSize)
+    {
+        if (m_mapFonts.contains(fontName))
+        {
+            SPARK_ERROR("Failed to add font [{0}] -- Already Exists!", fontName);
+            return false;
+        }
+
+        auto pFont = SPARK_RENDERING::FontLoader::Create(fontPath, fontSize);
+
+        if (!pFont)
+        {
+            SPARK_ERROR("Failed to add font [{}] at path [{}] -- to the asset manager!", fontName, fontPath);
+            return false;
+        }
+
+        m_mapFonts.emplace(fontName, std::move(pFont));
+
+        return true;
+    }
+
+    bool AssetManager::AddFontFromMemory(const std::string& fontName, unsigned char* fontData, float fontSize)
+    {
+        if (m_mapFonts.contains(fontName))
+        {
+            SPARK_ERROR("Failed to add font [{0}] -- Already Exists!", fontName);
+            return false;
+        }
+
+        auto pFont = SPARK_RENDERING::FontLoader::CreateFromMemory(fontData, fontSize);
+
+        if (!pFont)
+        {
+            SPARK_ERROR("Failed to add font [{0}] from memory -- to the asset manager!", fontName);
+            return false;
+        }
+
+        m_mapFonts.emplace(fontName, std::move(pFont));
+
+        return true;
+    }
+
+    std::shared_ptr<SPARK_RENDERING::Font> AssetManager::GetFont(const std::string& fontName)
+    {
+        auto fontItr = m_mapFonts.find(fontName);
+        if (fontItr == m_mapFonts.end())
+        {
+            SPARK_ERROR("Failed to get font [{0}] -- Does not exist!", fontName);
+            return nullptr;
+        }
+
+        return fontItr->second;
     }
 
     bool AssetManager::AddShader(const std::string& shaderName, const std::string& vertexPath, const std::string& fragmentPath)

@@ -5,6 +5,7 @@
 
 #include <Rendering/Essentials//Shader.h>
 #include <Rendering/Essentials/Texture.h>
+#include <Rendering/Essentials/Font.h>
 
 #include <Sounds/Essentials/Music.h>
 #include <Sounds/Essentials/SoundFx.h>
@@ -18,6 +19,7 @@ namespace SPARK_RESOURCES {
 	private:
 		std::map<std::string, std::shared_ptr<SPARK_RENDERING::Texture>> m_mapTextures{};
 		std::map<std::string, std::shared_ptr<SPARK_RENDERING::Shader>> m_mapShaders{};
+		std::map<std::string, std::shared_ptr<SPARK_RENDERING::Font>> m_mapFonts{};
 
 		std::map<std::string, std::shared_ptr<SPARK_SOUNDS::Music>> m_mapMusic{};
 		std::map<std::string, std::shared_ptr<SPARK_SOUNDS::SoundFX>> m_mapSoundFx{};
@@ -27,6 +29,10 @@ namespace SPARK_RESOURCES {
 
 		bool AddTexture(const std::string& textureName, const std::string& texturePath, bool pixelArt = true);
 		std::shared_ptr<SPARK_RENDERING::Texture> GetTexture(const std::string& textureName);
+
+		bool AddFont(const std::string& fontName, const std::string& fontPath, float fontSize = 32.f);
+		bool AddFontFromMemory(const std::string& fontName, unsigned char* fontData, float fontSize = 32.f);
+		std::shared_ptr<SPARK_RENDERING::Font> GetFont(const std::string& fontName);
 
 		bool AddShader(const std::string& shaderName, const std::string& vertexPath, const std::string& fragmentPath);
 		std::shared_ptr<SPARK_RENDERING::Shader> GetShader(const std::string& shaderName);

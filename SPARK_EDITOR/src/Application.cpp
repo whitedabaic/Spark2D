@@ -235,8 +235,34 @@ namespace SPARK_EDITOR {
 			return false;
 		}
 
-		glLineWidth(4.f);
+		renderer->SetLineWidth(4.f);
 
+		// Temp Load pixel font
+		if (!assetManager->AddFont("pixel", "./assets/fonts/fangsong.ttf"))
+		{
+			SPARK_ERROR("Failed to load pixel font!");
+			return false;
+		}
+		// ============================================================================
+		// Test for Drawing Text --> TO BE DELETED!
+		// ============================================================================
+		auto pFont = assetManager->GetFont("pixel");
+		renderer->DrawText2D(
+			SPARK_RENDERING::Text{
+				.position = glm::vec2{ 250.f, 200.f },
+				.textStr = "SPARK2D",
+				.pFont = pFont
+			}
+		);
+
+		renderer->DrawText2D(
+			SPARK_RENDERING::Text{
+			.position = glm::vec2{ 150.f, 300.f },
+				.textStr = "TEXT BATCH RENDERING!",
+				.pFont = pFont
+			}
+		);
+		// ============================================================================
 		return true;
 	}
 
@@ -259,6 +285,18 @@ namespace SPARK_EDITOR {
 		if (!assetManager->AddShader("color", "assets/shaders/colorShader.vert", "assets/shaders/colorShader.frag"))
 		{
 			SPARK_ERROR("Failed to add the color shader to the asset manager");
+			return false;
+		}
+
+		if (!assetManager->AddShader("circle", "assets/shaders/circleShader.vert", "assets/shaders/circleShader.frag"))
+		{
+			SPARK_ERROR("Failed to add the circle shader to the asset manager");
+			return false;
+		}
+
+		if (!assetManager->AddShader("font", "assets/shaders/fontShader.vert", "assets/shaders/fontShader.frag"))
+		{
+			SPARK_ERROR("Failed to add the font shader to the asset manager");
 			return false;
 		}
 
@@ -370,6 +408,8 @@ namespace SPARK_EDITOR {
 		auto& assetManager = m_pRegistry->GetContext<std::shared_ptr<SPARK_RESOURCES::AssetManager>>();
 
 		auto shader = assetManager->GetShader("color");
+		auto circleShader = assetManager->GetShader("circle");
+		auto fontShader = assetManager->GetShader("font");
 
 		glViewport(
 			0, 0,
@@ -383,10 +423,15 @@ namespace SPARK_EDITOR {
 		auto& scriptSystem = m_pRegistry->GetContext<std::shared_ptr<SPARK_CORE::Systems::ScriptingSystem>>();
 		scriptSystem->Render();
 		renderSystem->Update();
-		renderer->DrawLines(*shader, *camera);
 
+		renderer->DrawLines(*shader, *camera);
+		renderer->DrawFilledRects(*shader, *camera);
+		renderer->DrawCircles(*circleShader, *camera);
+		renderer->DrawAllText(*fontShader, *camera);
 
 		SDL_GL_SwapWindow(m_pWindow->GetWindow().get());
+
+		renderer->ClearPrimitives();
 	}
 
 	void Application::CleanUp()

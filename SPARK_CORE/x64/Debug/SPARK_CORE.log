@@ -1,5 +1,4 @@
-﻿  AnimationComponent.cpp
-  SpriteComponent.cpp
+﻿  SpriteComponent.cpp
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(130,9): warning C4005: “APIENTRY”: 宏重定义
   (编译源文件“Core/ECS/Components/SpriteComponent.cpp”)
       F:\VisualStudioCode\Spark2D\GLAD\glad\include\glad\glad.h(32,9):
@@ -11,14 +10,18 @@ C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(1
       F:\VisualStudioCode\Spark2D\GLAD\glad\include\glad\glad.h(32,9):
       参见“APIENTRY”的前一个定义
   
-  InputManager.cpp
+  RendererBindings.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(130,9): warning C4005: “APIENTRY”: 宏重定义
+  (编译源文件“Core/Scripting/RendererBindings.cpp”)
+      F:\VisualStudioCode\Spark2D\GLAD\glad\include\glad\glad.h(32,9):
+      参见“APIENTRY”的前一个定义
+  
   SoundBindings.cpp
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(130,9): warning C4005: “APIENTRY”: 宏重定义
   (编译源文件“Core/Scripting/SoundBindings.cpp”)
       F:\VisualStudioCode\Spark2D\GLAD\glad\include\glad\glad.h(32,9):
       参见“APIENTRY”的前一个定义
   
-  AnimationSystem.cpp
   RenderSystem.cpp
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(130,9): warning C4005: “APIENTRY”: 宏重定义
   (编译源文件“Core/Systems/RenderSystem.cpp”)

@@ -96,6 +96,9 @@ namespace SPARK_CORE::Systems {
 				SPARK_ERROR("Error running the Update script: {0}", e);
 			}
 		}
+
+		auto& lua = m_Registry.GetContext<std::shared_ptr<sol::state>>();
+		lua->collect_garbage();
 	}
 
 	void ScriptingSystem::Render()
@@ -123,6 +126,9 @@ namespace SPARK_CORE::Systems {
 				SPARK_ERROR("Error running the Render script: {0}", e);
 			}
 		}
+
+		auto& lua = m_Registry.GetContext<std::shared_ptr<sol::state>>();
+		lua->collect_garbage();
 	}
 
 	auto create_timer = [](sol::state& lua) {

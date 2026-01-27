@@ -9,6 +9,7 @@ F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\ECS\Registry.cpp;F:\VisualStudioCode
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\Resources\AssetManager.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\AssetManager.obj
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\Scripting\GlmLuaBindings.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\GlmLuaBindings.obj
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\Scripting\InputManager.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\InputManager.obj
+F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\Scripting\RendererBindings.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\RendererBindings.obj
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\Scripting\SoundBindings.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\SoundBindings.obj
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\Systems\AnimationSystem.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\AnimationSystem.obj
 F:\VisualStudioCode\Spark2D\SPARK_CORE\Core\Systems\RenderSystem.cpp;F:\VisualStudioCode\Spark2D\SPARK_CORE\x64\Debug\RenderSystem.obj
