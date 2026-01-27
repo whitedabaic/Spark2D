@@ -5,9 +5,26 @@
 #include <vector>
 #include <cassert>
 
-#define SPARK_LOG(x, ...) SPARK_LOGGER::Logger::GetInstance().Log(x, __VA_ARGS__);
-#define SPARK_WARN(x, ...) SPARK_LOGGER::Logger::GetInstance().Warn(x, __VA_ARGS__);
-#define SPARK_ERROR(x, ...) SPARK_LOGGER::Logger::GetInstance().Error(std::source_location::current(), x, __VA_ARGS__);
+#define VA_ARGS(...) , ##__VA_ARGS__
+
+#ifdef _WIN32
+#define SPARK_LOG(x, ...) SPARK_LOGGER::Logger::GetInstance().Log(x, __VA_ARGS__)
+#else
+#define SPARK_LOG(x, ...) SPARK_LOGGER::Logger::GetInstance().Log(x VA_ARGS(__VA_ARGS__))
+#endif 
+
+#ifdef _WIN32
+#define SPARK_WARN(x, ...) SPARK_LOGGER::Logger::GetInstance().Warn(x, __VA_ARGS__)
+#else 
+#define SPARK_WARN(x, ...) SPARK_LOGGER::Logger::GetInstance().Warn(x VA_ARGS(__VA_ARGS__))
+#endif
+
+#ifdef _WIN32
+#define SPARK_ERROR(x, ...) SPARK_LOGGER::Logger::GetInstance().Error(std::source_location::current(), x, __VA_ARGS__)
+#else 
+#define SPARK_ERROR(x, ...) SPARK_LOGGER::Logger::GetInstance().Error(std::source_location::current(), x VA_ARGS(__VA_ARGS__))
+#endif
+
 #define SPARK_ASSERT(x) assert(x);
 #define SPARK_INIT_LOGS(console, retain) SPARK_LOGGER::Logger::GetInstance().Init(console, retain);
 

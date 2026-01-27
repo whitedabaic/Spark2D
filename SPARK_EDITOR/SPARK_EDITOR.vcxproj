@@ -71,11 +71,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir).\Dependencies\SDL\include;$(SolutionDir).\GLAD\glad\include;$(SolutionDir).\SPARK_UTILITES;$(SolutionDir).\SPARK_WINDOW;$(SolutionDir).\SOIL\include;$(SolutionDir).\Dependencies\glm;$(SolutionDir).\SPARK_RENDERING;$(SolutionDir).\SPARK_LOGGER;$(SolutionDIr).\Dependencies\entt;$(SolutionDir).\SPARK_CORE;$(SolutionDIr).\Dependencies\lua_53\include;$(SolutionDir).\Dependencies\sol3;$(SolutionDir).\SPARK_SOUNDS\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir).\Dependencies\SDL\include;$(SolutionDir).\GLAD\glad\include;$(SolutionDir).\SPARK_UTILITES;$(SolutionDir).\SPARK_WINDOW;$(SolutionDir).\SOIL\include;$(SolutionDir).\Dependencies\glm;$(SolutionDir).\SPARK_RENDERING;$(SolutionDir).\SPARK_LOGGER;$(SolutionDIr).\Dependencies\entt;$(SolutionDir).\SPARK_CORE;$(SolutionDIr).\Dependencies\lua_53\include;$(SolutionDir).\Dependencies\sol3;$(SolutionDir).\SPARK_SOUNDS\src;$(SolutionDir).\SPARK_PHYSICS;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir).\Dependencies\SDL\lib;$(SolutionDir).\Dependencies\lua_53\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir).\Dependencies\SDL\include;$(SolutionDir).\GLAD\glad\include;$(SolutionDir).\SPARK_UTILITES;$(SolutionDir).\SPARK_WINDOW;$(SolutionDir).\SOIL\include;$(SolutionDir).\Dependencies\glm;$(SolutionDir).\SPARK_RENDERING;$(SolutionDir).\SPARK_LOGGER;$(SolutionDIr).\Dependencies\entt;$(SolutionDir).\SPARK_CORE;$(SolutionDIr).\Dependencies\lua_53\include;$(SolutionDir).\Dependencies\sol3;$(SolutionDir).\SPARK_SOUNDS\src;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir).\Dependencies\SDL\include;$(SolutionDir).\GLAD\glad\include;$(SolutionDir).\SPARK_UTILITES;$(SolutionDir).\SPARK_WINDOW;$(SolutionDir).\SOIL\include;$(SolutionDir).\Dependencies\glm;$(SolutionDir).\SPARK_RENDERING;$(SolutionDir).\SPARK_LOGGER;$(SolutionDIr).\Dependencies\entt;$(SolutionDir).\SPARK_CORE;$(SolutionDIr).\Dependencies\lua_53\include;$(SolutionDir).\Dependencies\sol3;$(SolutionDir).\SPARK_SOUNDS\src;$(SolutionDir).\SPARK_PHYSICS;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir).\Dependencies\SDL\lib;$(SolutionDir).\Dependencies\lua_53\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -165,9 +165,6 @@
     </ProjectReference>
     <ProjectReference Include="..\SPARK_WINDOW\SPARK_WINDOW.vcxproj">
       <Project>{4d969bb7-a161-46d9-87e2-d55115aa30d1}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\_Games\_Games.vcxproj">
-      <Project>{4e06bcba-f6ec-472f-aa21-b4af9e1077be}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

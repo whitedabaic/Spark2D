@@ -16,8 +16,11 @@ namespace SPARK_LOGGER
 		auto time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
 
         char buf[30];
+#ifdef _WIN32
 		ctime_s(buf, sizeof(buf), &time);
-
+#else 
+        ctime_r(&time, buf);
+#endif 
 		LogTime logTime{ std::string{ buf } };
         return std::format("{0}-{1}-{2} {3}", logTime.year, logTime.month, logTime.dayNumber, logTime.time);
     }

@@ -1,11 +1,61 @@
-﻿  TextBatchRenderer.cpp
+﻿  BatchRenderer.cpp
+F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\Batcher.h(95,74): warning C4244: “参数”: 从“GLsizeiptr”转换到“GLsizei”，可能丢失数据
+  (编译源文件“Rendering/Core/BatchRenderer.cpp”)
+      F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\Batcher.h(95,74):
+      模板实例化上下文(最早的实例化上下文)为
+          F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\BatchRenderer.h(6,37):
+          查看对正在编译的 类 模板 实例化“SPARK_RENDERING::Batcher<SPARK_RENDERING::Batch,SPARK_RENDERING::SpriteGlyph>”的引用
+          F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\Batcher.h(93,2):
+          在编译 类 模板 成员函数“void SPARK_RENDERING::Batcher<SPARK_RENDERING::Batch,SPARK_RENDERING::SpriteGlyph>::SetVertexAttribute(GLuint,GLuint,GLenum,GLsizeiptr,void *,GLboolean)”时
+              F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\BatchRenderer.cpp(8,21):
+              请参阅 "SPARK_RENDERING::SpriteBatchRenderer::Initialize" 中对 "SPARK_RENDERING::Batcher<SPARK_RENDERING::Batch,SPARK_RENDERING::SpriteGlyph>::SetVertexAttribute" 的第一个引用
+  
+  Camera2D.cpp
+  CircleBatchRenderer.cpp
+F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\Batcher.h(95,74): warning C4244: “参数”: 从“GLsizeiptr”转换到“GLsizei”，可能丢失数据
+  (编译源文件“Rendering/Core/CircleBatchRenderer.cpp”)
+      F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\Batcher.h(95,74):
+      模板实例化上下文(最早的实例化上下文)为
+          F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\CircleBatchRenderer.h(7,37):
+          查看对正在编译的 类 模板 实例化“SPARK_RENDERING::Batcher<SPARK_RENDERING::RectBatch,SPARK_RENDERING::CircleGlyph>”的引用
+          F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\Batcher.h(93,2):
+          在编译 类 模板 成员函数“void SPARK_RENDERING::Batcher<SPARK_RENDERING::RectBatch,SPARK_RENDERING::CircleGlyph>::SetVertexAttribute(GLuint,GLuint,GLenum,GLsizeiptr,void *,GLboolean)”时
+              F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\CircleBatchRenderer.cpp(42,21):
+              请参阅 "SPARK_RENDERING::CircleBatchRenderer::Initialize" 中对 "SPARK_RENDERING::Batcher<SPARK_RENDERING::RectBatch,SPARK_RENDERING::CircleGlyph>::SetVertexAttribute" 的第一个引用
+  
+  LineBatchRenderer.cpp
+F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\Batcher.h(95,74): warning C4244: “参数”: 从“GLsizeiptr”转换到“GLsizei”，可能丢失数据
+  (编译源文件“Rendering/Core/LineBatchRenderer.cpp”)
+      F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\Batcher.h(95,74):
+      模板实例化上下文(最早的实例化上下文)为
+          F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\LineBatchRenderer.h(7,35):
+          查看对正在编译的 类 模板 实例化“SPARK_RENDERING::Batcher<SPARK_RENDERING::LineBatch,SPARK_RENDERING::LineGlyph>”的引用
+          F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\Batcher.h(93,2):
+          在编译 类 模板 成员函数“void SPARK_RENDERING::Batcher<SPARK_RENDERING::LineBatch,SPARK_RENDERING::LineGlyph>::SetVertexAttribute(GLuint,GLuint,GLenum,GLsizeiptr,void *,GLboolean)”时
+              F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\LineBatchRenderer.cpp(36,21):
+              请参阅 "SPARK_RENDERING::LineBatchRenderer::Initialize" 中对 "SPARK_RENDERING::Batcher<SPARK_RENDERING::LineBatch,SPARK_RENDERING::LineGlyph>::SetVertexAttribute" 的第一个引用
+  
+  RectBatchRenderer.cpp
+F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\Batcher.h(95,74): warning C4244: “参数”: 从“GLsizeiptr”转换到“GLsizei”，可能丢失数据
+  (编译源文件“Rendering/Core/RectBatchRenderer.cpp”)
+      F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\Batcher.h(95,74):
+      模板实例化上下文(最早的实例化上下文)为
+          F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\RectBatchRenderer.h(7,35):
+          查看对正在编译的 类 模板 实例化“SPARK_RENDERING::Batcher<SPARK_RENDERING::RectBatch,SPARK_RENDERING::RectGlyph>”的引用
+          F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\Batcher.h(93,2):
+          在编译 类 模板 成员函数“void SPARK_RENDERING::Batcher<SPARK_RENDERING::RectBatch,SPARK_RENDERING::RectGlyph>::SetVertexAttribute(GLuint,GLuint,GLenum,GLsizeiptr,void *,GLboolean)”时
+              F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\RectBatchRenderer.cpp(36,21):
+              请参阅 "SPARK_RENDERING::RectBatchRenderer::Initialize" 中对 "SPARK_RENDERING::Batcher<SPARK_RENDERING::RectBatch,SPARK_RENDERING::RectGlyph>::SetVertexAttribute" 的第一个引用
+  
+  Renderer.cpp
+  TextBatchRenderer.cpp
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(130,9): warning C4005: “APIENTRY”: 宏重定义
-  (编译源文件“Rendering/Core/TextBatchRenderer.cpp”)
+  (编译源文件“../Spark_RENDERING/Rendering/Core/TextBatchRenderer.cpp”)
       F:\VisualStudioCode\Spark2D\GLAD\glad\include\glad\glad.h(32,9):
       参见“APIENTRY”的前一个定义
   
 F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\Batcher.h(95,74): warning C4244: “参数”: 从“GLsizeiptr”转换到“GLsizei”，可能丢失数据
-  (编译源文件“Rendering/Core/TextBatchRenderer.cpp”)
+  (编译源文件“../Spark_RENDERING/Rendering/Core/TextBatchRenderer.cpp”)
       F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\Batcher.h(95,74):
       模板实例化上下文(最早的实例化上下文)为
           F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\TextBatchRenderer.h(6,35):
@@ -15,4 +65,26 @@ F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\Batcher.h(95,74): war
               F:\VisualStudioCode\Spark2D\Spark_RENDERING\Rendering\Core\TextBatchRenderer.cpp(8,21):
               请参阅 "SPARK_RENDERING::TextBatchRenderer::Initialize" 中对 "SPARK_RENDERING::Batcher<SPARK_RENDERING::TextBatch,SPARK_RENDERING::TextGlyph>::SetVertexAttribute" 的第一个引用
   
+  Font.cpp
+  FontLoader.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(130,9): warning C4005: “APIENTRY”: 宏重定义
+  (编译源文件“../Spark_RENDERING/Rendering/Essentials/FontLoader.cpp”)
+      F:\VisualStudioCode\Spark2D\GLAD\glad\include\glad\glad.h(32,9):
+      参见“APIENTRY”的前一个定义
+  
+  Shader.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(130,9): warning C4005: “APIENTRY”: 宏重定义
+  (编译源文件“../Spark_RENDERING/Rendering/Essentials/Shader.cpp”)
+      F:\VisualStudioCode\Spark2D\GLAD\glad\include\glad\glad.h(32,9):
+      参见“APIENTRY”的前一个定义
+  
+  ShaderLoader.cpp
+  Texture.cpp
+  TextureLoader.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(130,9): warning C4005: “APIENTRY”: 宏重定义
+  (编译源文件“../Spark_RENDERING/Rendering/Essentials/TextureLoader.cpp”)
+      F:\VisualStudioCode\Spark2D\GLAD\glad\include\glad\glad.h(32,9):
+      参见“APIENTRY”的前一个定义
+  
+  正在生成代码...
   Spark_RENDERING.vcxproj -> F:\VisualStudioCode\Spark2D\x64\Debug\SPARK_RENDERING.lib
