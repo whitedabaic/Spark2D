@@ -238,31 +238,12 @@ namespace SPARK_EDITOR {
 		renderer->SetLineWidth(4.f);
 
 		// Temp Load pixel font
-		if (!assetManager->AddFont("pixel", "./assets/fonts/fangsong.ttf"))
+		if (!assetManager->AddFont("fangsong", "./assets/fonts/fangsong.ttf"))
 		{
-			SPARK_ERROR("Failed to load pixel font!");
+			SPARK_ERROR("Failed to load fangsong font!");
 			return false;
 		}
-		// ============================================================================
-		// Test for Drawing Text --> TO BE DELETED!
-		// ============================================================================
-		auto pFont = assetManager->GetFont("pixel");
-		renderer->DrawText2D(
-			SPARK_RENDERING::Text{
-				.position = glm::vec2{ 250.f, 200.f },
-				.textStr = "SPARK2D",
-				.pFont = pFont
-			}
-		);
 
-		renderer->DrawText2D(
-			SPARK_RENDERING::Text{
-			.position = glm::vec2{ 150.f, 300.f },
-				.textStr = "TEXT BATCH RENDERING!",
-				.pFont = pFont
-			}
-		);
-		// ============================================================================
 		return true;
 	}
 

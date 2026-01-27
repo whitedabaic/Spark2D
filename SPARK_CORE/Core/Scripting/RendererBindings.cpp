@@ -1,4 +1,5 @@
 #include "RendererBindings.h"
+#include "../Resources/AssetManager.h"
 #include <Rendering/Essentials/Primitives.h>
 #include <Rendering/Core/Camera2D.h>
 #include <Rendering/Core/Renderer.h>
@@ -6,9 +7,13 @@
 #include <Logger/Logger.h>
 
 using namespace SPARK_RENDERING;
+using namespace SPARK_RESOURCES;
 
 void SPARK_CORE::Scripting::RendererBinder::CreateRenderingBind(sol::state& lua, SPARK_CORE::ECS::Registry& registry)
 {
+	// Get the Asset Manager
+	auto& assetManager = registry.GetContext<std::shared_ptr<AssetManager>>();
+
 	// Primitive Bind
 	lua.new_usertype<Line>(
 		"Line",
@@ -54,6 +59,35 @@ void SPARK_CORE::Scripting::RendererBinder::CreateRenderingBind(sol::state& lua,
 		"color", &Circle::color
 	);
 
+	lua.new_usertype<Text>(
+		"Text",
+		sol::call_constructor,
+		sol::factories(
+			[&](const glm::vec2& position, const std::string& textStr, const std::string& fontName, float wrap,
+				const Color& color)
+			{
+				auto pFont = assetManager->GetFont(fontName);
+				if (!pFont)
+				{
+					SPARK_ERROR("Failed to get font [{}] --Does not exist in asset Manager!", fontName);
+					return Text{};
+				}
+
+				return Text{
+					.position = position,
+					.textStr = textStr,
+					.wrap = wrap,
+					.pFont = pFont,
+					.color = color 
+				};
+			}
+		),
+		"position", &Text::position,
+		"textStr", &Text::textStr,
+		"wrap", &Text::wrap,
+		"color", &Text::color
+	);
+
 	auto& renderer = registry.GetContext<std::shared_ptr<Renderer>>();
 	if (!renderer)
 	{
@@ -97,6 +131,12 @@ void SPARK_CORE::Scripting::RendererBinder::CreateRenderingBind(sol::state& lua,
 	lua.set_function(
 		"DrawFilledRect", [&](const Rect& rect) {
 			renderer->DrawFilledRect(rect);
+		}
+	);
+
+	lua.set_function(
+		"DrawText", [&](const Text& text) {
+			renderer->DrawText2D(text);
 		}
 	);
 

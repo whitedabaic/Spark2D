@@ -1,39 +1,8 @@
-﻿  SpriteComponent.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(130,9): warning C4005: “APIENTRY”: 宏重定义
-  (编译源文件“Core/ECS/Components/SpriteComponent.cpp”)
-      F:\VisualStudioCode\Spark2D\GLAD\glad\include\glad\glad.h(32,9):
-      参见“APIENTRY”的前一个定义
-  
-  AssetManager.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(130,9): warning C4005: “APIENTRY”: 宏重定义
-  (编译源文件“Core/Resources/AssetManager.cpp”)
-      F:\VisualStudioCode\Spark2D\GLAD\glad\include\glad\glad.h(32,9):
-      参见“APIENTRY”的前一个定义
-  
-  RendererBindings.cpp
+﻿  RendererBindings.cpp
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(130,9): warning C4005: “APIENTRY”: 宏重定义
   (编译源文件“Core/Scripting/RendererBindings.cpp”)
       F:\VisualStudioCode\Spark2D\GLAD\glad\include\glad\glad.h(32,9):
       参见“APIENTRY”的前一个定义
   
-  SoundBindings.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(130,9): warning C4005: “APIENTRY”: 宏重定义
-  (编译源文件“Core/Scripting/SoundBindings.cpp”)
-      F:\VisualStudioCode\Spark2D\GLAD\glad\include\glad\glad.h(32,9):
-      参见“APIENTRY”的前一个定义
-  
-  RenderSystem.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(130,9): warning C4005: “APIENTRY”: 宏重定义
-  (编译源文件“Core/Systems/RenderSystem.cpp”)
-      F:\VisualStudioCode\Spark2D\GLAD\glad\include\glad\glad.h(32,9):
-      参见“APIENTRY”的前一个定义
-  
-  ScriptingSystem.cpp
-C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(130,9): warning C4005: “APIENTRY”: 宏重定义
-  (编译源文件“Core/Systems/ScriptingSystem.cpp”)
-      F:\VisualStudioCode\Spark2D\GLAD\glad\include\glad\glad.h(32,9):
-      参见“APIENTRY”的前一个定义
-  
-  正在生成代码...
 SDL2_mixer.lib(SDL2_mixer.dll) : warning LNK4006: __NULL_IMPORT_DESCRIPTOR 已在 SDL2.lib(SDL2.dll) 中定义；已忽略第二个定义
   SPARK_CORE.vcxproj -> F:\VisualStudioCode\Spark2D\x64\Debug\SPARK_CORE.lib
