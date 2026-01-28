@@ -144,7 +144,7 @@ namespace SPARK_CORE::ECS {
 				auto body = pc.GetBody();
 				if (!body)
 				{
-					// TODO: Add Error
+					SPARK_ERROR("Failed to get the PhysicsComponent!");
 					return;
 				}
 
@@ -154,7 +154,7 @@ namespace SPARK_CORE::ECS {
 				auto body = pc.GetBody();
 				if (!body)
 				{
-					// TODO: Add Error
+					SPARK_ERROR("Failed to get the PhysicsComponent!");
 					return;
 				}
 
@@ -164,7 +164,7 @@ namespace SPARK_CORE::ECS {
 				auto body = pc.GetBody();
 				if (!body)
 				{
-					// TODO: Add Error
+					SPARK_ERROR("Failed to get the PhysicsComponent!");
 					return;
 				}
 
@@ -174,7 +174,7 @@ namespace SPARK_CORE::ECS {
 				auto body = pc.GetBody();
 				if (!body)
 				{
-					// TODO: Add Error
+					SPARK_ERROR("Failed to get the PhysicsComponent!");
 					return glm::vec2{ 0.f };
 				}
 				const auto& linearVelocity = body->GetLinearVelocity();
@@ -184,7 +184,7 @@ namespace SPARK_CORE::ECS {
 				auto body = pc.GetBody();
 				if (!body)
 				{
-					// TODO: Add Error
+					SPARK_ERROR("Failed to get the PhysicsComponent!");
 					return;
 				}
 
@@ -194,7 +194,7 @@ namespace SPARK_CORE::ECS {
 				auto body = pc.GetBody();
 				if (!body)
 				{
-					// TODO: Add Error
+					SPARK_ERROR("Failed to get the PhysicsComponent!");
 					return 0.f;
 				}
 
@@ -204,7 +204,7 @@ namespace SPARK_CORE::ECS {
 				auto body = pc.GetBody();
 				if (!body)
 				{
-					// TODO: Add Error
+					SPARK_ERROR("Failed to get the PhysicsComponent!");
 					return;
 				}
 
