@@ -6,6 +6,7 @@
 #include "../ECS/Components/BoxColliderComponent.h"
 #include "../ECS/Components/CircleColliderComponent.h"
 #include "../ECS/Components/PhysicsComponent.h"
+#include "../ECS/Components/TextComponent.h"
 #include "../ECS/Entity.h"
 
 #include "../Scripting/GlmLuaBindings.h"
@@ -173,6 +174,7 @@ namespace SPARK_CORE::Systems {
 		BoxColliderComponent::CreateLuaBoxColliderBind(lua);
 		CircleColliderComponent::CreateLuaCircleColliderBind(lua);
 		PhysicsComponent::CreatePhysicsLuaBind(lua, registry.GetRegistry());
+		TextComponent::CreateLuaTextBindings(lua);
 
 		Entity::RegisterMetaComponent<TransformComponent>();
 		Entity::RegisterMetaComponent<SpriteComponent>();
@@ -180,6 +182,7 @@ namespace SPARK_CORE::Systems {
 		Entity::RegisterMetaComponent<BoxColliderComponent>();
 		Entity::RegisterMetaComponent<CircleColliderComponent>();
 		Entity::RegisterMetaComponent<PhysicsComponent>();
+		Entity::RegisterMetaComponent<TextComponent>();
 
 		Registry::RegisterMetaComponent<TransformComponent>();
 		Registry::RegisterMetaComponent<SpriteComponent>();
@@ -187,6 +190,7 @@ namespace SPARK_CORE::Systems {
 		Registry::RegisterMetaComponent<BoxColliderComponent>();
 		Registry::RegisterMetaComponent<CircleColliderComponent>();
 		Registry::RegisterMetaComponent<PhysicsComponent>();
+		Registry::RegisterMetaComponent<TextComponent>();
 	}
 	void ScriptingSystem::RegisterLuaFunctions(sol::state& lua)
 	{
