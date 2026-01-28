@@ -1,5 +1,6 @@
 #include "PhysicsComponent.h"
 #include <Logger/Logger.h>
+#include "../../CoreUtilities/CoreEngineData.h"
 
 namespace SPARK_CORE::ECS {
 	PhysicsComponent::PhysicsComponent()
@@ -25,6 +26,7 @@ namespace SPARK_CORE::ECS {
 		b2BodyDef bodyDef{};
 		bodyDef.type = static_cast<b2BodyType>(m_InitialAttribs.eType);
 
+		auto PIXELS_TO_METERS = CoreEngineData::GetInstance().PixelsToMeters();
 		// Set the initial position of the body
 		bodyDef.position.Set(
 			(m_InitialAttribs.position.x + m_InitialAttribs.offset.x - (windowWidth * 0.5f) +

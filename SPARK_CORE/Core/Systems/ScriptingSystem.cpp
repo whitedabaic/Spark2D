@@ -17,6 +17,8 @@
 #include "../Resources/AssetManager.h"
 #include <Logger/Logger.h>
 #include <SparkUtilities/Timer.h>
+#include "../CoreUtilities/CoreEngineData.h"
+#include "../CoreUtilities/FollowCamera.h"
 
 using namespace SPARK_CORE::ECS;
 
@@ -163,7 +165,7 @@ namespace SPARK_CORE::Systems {
 		SPARK_RESOURCES::AssetManager::CreateLuaAssetManager(lua, registry);
 		SPARK_CORE::Scripting::SoundBinder::CreateSoundBind(lua, registry);
 		SPARK_CORE::Scripting::RendererBinder::CreateRenderingBind(lua, registry);
-
+		SPARK_CORE::FollowCamera::CreateLuaFollowCamera(lua, registry);
 		create_timer(lua);
 
 		Registry::CreateLuaRegistryBind(lua, registry);
