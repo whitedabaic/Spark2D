@@ -1,2 +1,39 @@
-﻿LINK : warning LNK4098: 默认库“LIBCMT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
-  SPARK_EDITOR.vcxproj -> F:\VisualStudioCode\Spark2D\x64\Debug\SPARK_EDITOR.exe
+﻿  Application.cpp
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.26100.0\shared\minwindef.h(130,9): warning C4005: “APIENTRY”: 宏重定义
+  (编译源文件“src/Application.cpp”)
+      F:\VisualStudioCode\Spark2D\GLAD\glad\include\glad\glad.h(32,9):
+      参见“APIENTRY”的前一个定义
+  
+  main.cpp
+  正在生成代码...
+SPARK_PHYSICS.lib(b2_world.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_world.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_body.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_body.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_joint.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_joint.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_chain_circle_contact.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_chain_circle_contact.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_chain_polygon_contact.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_chain_polygon_contact.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_circle_contact.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_circle_contact.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_edge_circle_contact.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_edge_circle_contact.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_edge_polygon_contact.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_edge_polygon_contact.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_polygon_circle_contact.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_polygon_circle_contact.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_polygon_contact.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_polygon_contact.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_chain_shape.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_chain_shape.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_edge_shape.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_edge_shape.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_circle_shape.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_circle_shape.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_polygon_shape.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(Application.obj 中)
+SPARK_PHYSICS.lib(b2_polygon_shape.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(Application.obj 中)
+LINK : warning LNK4098: 默认库“LIBCMT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
+LINK : warning LNK4098: 默认库“MSVCRT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
+F:\VisualStudioCode\Spark2D\x64\Debug\SPARK_EDITOR.exe : fatal error LNK1319: 检测到 28 个不匹配项

@@ -25,6 +25,7 @@
 
 #include <Core/Systems/ScriptingSystem.h>
 #include <Core/Systems/RenderSystem.h>
+#include <Core/Systems/RenderShapeSystem.h>
 #include <Core/Systems/AnimationSystem.h>
 #include <Core/Systems/PhysicsSystem.h>
 
@@ -170,6 +171,19 @@ namespace SPARK_EDITOR {
 			return false;
 		}
 
+		auto renderShapeSystem = std::make_shared<SPARK_CORE::Systems::RenderShapeSystem>(*m_pRegistry);
+		if (!renderShapeSystem)
+		{
+			SPARK_ERROR("Failed to create the render shape system!");
+			return false;
+		}
+
+		if (!m_pRegistry->AddToContext<std::shared_ptr<SPARK_CORE::Systems::RenderShapeSystem>>(renderShapeSystem))
+		{
+			SPARK_ERROR("Failed to add the render shape system to the registry context!");
+			return false;
+		}
+
 		auto animationSystem = std::make_shared<SPARK_CORE::Systems::AnimationSystem>(*m_pRegistry);
 		if (!animationSystem)
 		{
@@ -276,7 +290,7 @@ namespace SPARK_EDITOR {
 		auto& transform1 = reg.emplace<TransformComponent>(
 			entity1,
 			TransformComponent{
-				.position = glm::vec2{320.f, 0.f},
+				.position = glm::vec2{380.f, 0.f},
 				.scale = glm::vec2{1.f}
 			}
 		);
@@ -291,12 +305,11 @@ namespace SPARK_EDITOR {
 		auto& physics1 = reg.emplace<PhysicsComponent>(
 			entity1,
 			PhysicsComponent{
-				pPhysicsWorld,
 				PhysicsAttributes{
 					.eType = RigidBodyType::DYNAMIC,
 					.density = 100.f,
 					.friction = 0.5f,
-					.restitution = 0.9f,
+					.restitution = 0.7f,
 					.restitutionThreshold = 100.f,
 					.radius = circle1.radius * PIXELS_TO_METERS,
 					.gravityScale = 5.f,
@@ -308,7 +321,7 @@ namespace SPARK_EDITOR {
 			}
 		);
 
-		physics1.Init(640, 480);
+		physics1.Init(pPhysicsWorld, 640, 480);
 
 		auto& sprite = reg.emplace<SpriteComponent>(
 			entity1,
@@ -344,9 +357,8 @@ namespace SPARK_EDITOR {
 		auto& physics2 = reg.emplace<PhysicsComponent>(
 			entity2,
 			PhysicsComponent{
-				pPhysicsWorld,
 				PhysicsAttributes{
-					.eType = RigidBodyType::STATIC,
+					.eType = RigidBodyType::DYNAMIC,
 					.density = 1000.f,
 					.friction = 0.5f,
 					.restitution = 0.0f,
@@ -360,7 +372,7 @@ namespace SPARK_EDITOR {
 			}
 		);
 
-		physics2.Init(640, 480);
+		physics2.Init(pPhysicsWorld, 640, 480);
 
 		return true;
 	}
@@ -512,6 +524,7 @@ namespace SPARK_EDITOR {
 	void Application::Render()
 	{
 		auto& renderSystem = m_pRegistry->GetContext<std::shared_ptr<SPARK_CORE::Systems::RenderSystem>>();
+		auto& renderShapeSystem = m_pRegistry->GetContext<std::shared_ptr<SPARK_CORE::Systems::RenderShapeSystem>>();
 		auto& camera = m_pRegistry->GetContext<std::shared_ptr<SPARK_RENDERING::Camera2D>>();
 		auto& renderer = m_pRegistry->GetContext<std::shared_ptr<SPARK_RENDERING::Renderer>>();
 		auto& assetManager = m_pRegistry->GetContext<std::shared_ptr<SPARK_RESOURCES::AssetManager>>();
@@ -532,6 +545,7 @@ namespace SPARK_EDITOR {
 		auto& scriptSystem = m_pRegistry->GetContext<std::shared_ptr<SPARK_CORE::Systems::ScriptingSystem>>();
 		scriptSystem->Render();
 		renderSystem->Update();
+		renderShapeSystem->Update();
 
 		renderer->DrawLines(*shader, *camera);
 		renderer->DrawFilledRects(*shader, *camera);

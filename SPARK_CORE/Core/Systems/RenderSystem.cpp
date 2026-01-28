@@ -73,6 +73,7 @@ namespace SPARK_CORE::Systems {
 
 				model = glm::translate(model, glm::vec3{ -transform.position, 0.f });
 			}
+
 			m_pBatchRenderer->AddSprite(spriteRect, uvRect, texture->GetID(), sprite.layer, model, sprite.color);
 		}
 
