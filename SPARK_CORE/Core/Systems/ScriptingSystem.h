@@ -19,7 +19,7 @@ namespace SPARK_CORE::Systems {
 
 		static void RegisterLuaBindings(sol::state& lua, SPARK_CORE::ECS::Registry& registry);
 
-		static void RegisterLuaFunctions(sol::state& lua);
+		static void RegisterLuaFunctions(sol::state& lua, SPARK_CORE::ECS::Registry& registry);
 	};
 
 }

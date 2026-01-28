@@ -278,7 +278,7 @@ namespace SPARK_EDITOR {
 		}
 
 		SPARK_CORE::Systems::ScriptingSystem::RegisterLuaBindings(*lua, *m_pRegistry);
-		SPARK_CORE::Systems::ScriptingSystem::RegisterLuaFunctions(*lua);
+		SPARK_CORE::Systems::ScriptingSystem::RegisterLuaFunctions(*lua, *m_pRegistry);
 
 		if (!scriptSystem->LoadMainScript(*lua))
 		{

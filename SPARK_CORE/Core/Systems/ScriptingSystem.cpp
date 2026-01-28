@@ -7,6 +7,7 @@
 #include "../ECS/Components/CircleColliderComponent.h"
 #include "../ECS/Components/PhysicsComponent.h"
 #include "../ECS/Components/TextComponent.h"
+#include "../ECS/Components/RigidBodyComponent.h"
 #include "../ECS/Entity.h"
 
 #include "../Scripting/GlmLuaBindings.h"
@@ -17,10 +18,12 @@
 #include "../Resources/AssetManager.h"
 #include <Logger/Logger.h>
 #include <SparkUtilities/Timer.h>
+#include <SparkUtilities/RandomGenerator.h>
 #include "../CoreUtilities/CoreEngineData.h"
 #include "../CoreUtilities/FollowCamera.h"
 
 using namespace SPARK_CORE::ECS;
+using namespace SPARK_RESOURCES;
 
 namespace SPARK_CORE::Systems {
 
@@ -177,6 +180,7 @@ namespace SPARK_CORE::Systems {
 		CircleColliderComponent::CreateLuaCircleColliderBind(lua);
 		PhysicsComponent::CreatePhysicsLuaBind(lua, registry.GetRegistry());
 		TextComponent::CreateLuaTextBindings(lua);
+		RigidBodyComponent::CreateRigidBodyBind(lua);
 
 		Entity::RegisterMetaComponent<TransformComponent>();
 		Entity::RegisterMetaComponent<SpriteComponent>();
@@ -185,6 +189,7 @@ namespace SPARK_CORE::Systems {
 		Entity::RegisterMetaComponent<CircleColliderComponent>();
 		Entity::RegisterMetaComponent<PhysicsComponent>();
 		Entity::RegisterMetaComponent<TextComponent>();
+		Entity::RegisterMetaComponent<RigidBodyComponent>();
 
 		Registry::RegisterMetaComponent<TransformComponent>();
 		Registry::RegisterMetaComponent<SpriteComponent>();
@@ -193,8 +198,9 @@ namespace SPARK_CORE::Systems {
 		Registry::RegisterMetaComponent<CircleColliderComponent>();
 		Registry::RegisterMetaComponent<PhysicsComponent>();
 		Registry::RegisterMetaComponent<TextComponent>();
+		Registry::RegisterMetaComponent<RigidBodyComponent>();
 	}
-	void ScriptingSystem::RegisterLuaFunctions(sol::state& lua)
+	void ScriptingSystem::RegisterLuaFunctions(sol::state& lua, SPARK_CORE::ECS::Registry& registry)
 	{
 		lua.set_function(
 			"run_script", [&](const std::string& path)
@@ -212,6 +218,45 @@ namespace SPARK_CORE::Systems {
 
 				return true;
 			}
+		);
+
+
+		lua.set_function("get_ticks", [] {
+			return SDL_GetTicks();
+			}
+		);
+
+		auto& assetManager = registry.GetContext<std::shared_ptr<AssetManager>>();
+		lua.set_function("measure_text", [&](const std::string& text, const std::string& fontName) {
+			const auto& pFont = assetManager->GetFont(fontName);
+			if (!pFont)
+			{
+				SPARK_ERROR("Failed to get font [{}] - Does not exist in asset manager!", fontName);
+				return -1.f;
+			}
+
+			glm::vec2 position{ 0.f }, temp_pos{ position };
+			for (const auto& character : text)
+				pFont->GetNextCharPos(character, temp_pos);
+
+			return std::abs((position - temp_pos).x);
+			}
+		);
+
+		auto& engine = CoreEngineData::GetInstance();
+		lua.set_function("GetDeltaTime", [&] { return engine.GetDeltaTime(); });
+		lua.set_function("WindowWidth", [&] { return engine.WindowWidth(); });
+		lua.set_function("WindowHeight", [&] { return engine.WindowHeight(); });
+		lua.set_function("DisablePhysics", [&] { engine.DisablePhysics(); });
+		lua.set_function("EnablePhysics", [&] { engine.EnablePhysics(); });
+		lua.set_function("IsPhysicsEnabled", [&] { return engine.IsPhysicsEnabled(); });
+
+		lua.new_usertype<SPARK_UTIL::RandomGenerator>(
+			"Random",
+			sol::call_constructor,
+			sol::constructors<SPARK_UTIL::RandomGenerator(uint32_t, uint32_t), SPARK_UTIL::RandomGenerator()>(),
+			"get_float", &SPARK_UTIL::RandomGenerator::GetFloat,
+			"get_int", &SPARK_UTIL::RandomGenerator::GetInt
 		);
 	}
 }

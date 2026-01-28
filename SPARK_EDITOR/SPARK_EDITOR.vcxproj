@@ -180,6 +180,7 @@
     <None Include="assets\scripts\asteroids\utilities.lua" />
     <None Include="assets\scripts\follow_cam.lua" />
     <None Include="assets\scripts\main.lua" />
+    <None Include="assets\scripts\rain_generator.lua" />
     <None Include="assets\scripts\TestProject\assetDefs.lua" />
     <None Include="assets\scripts\TestProject\testmap.lua" />
     <None Include="assets\scripts\utilities.lua" />

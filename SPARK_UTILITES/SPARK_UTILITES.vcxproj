@@ -141,10 +141,12 @@
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="SparkUtilities\RandomGenerator.h" />
     <ClInclude Include="SparkUtilities\SDL_Wrappers.h" />
     <ClInclude Include="SparkUtilities\Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="SparkUtilities\RandomGenerator.cpp" />
     <ClCompile Include="SparkUtilities\SDL_Wrappers.cpp" />
     <ClCompile Include="SparkUtilities\Timer.cpp" />
   </ItemGroup>

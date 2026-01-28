@@ -213,10 +213,12 @@ function LoadMap(mapDef)
 				-- Currently the box collider has a sprite, this will be changed once we can draw
 				-- Simple Primitives in the engine.
 				if tileset.name == "collider32" then 
+					local width = tileset.tilewidth / scale
+					local height = tileset.tileheight / scale
 					tile:add_component(
 						BoxCollider(
-							tileset.tilewidth,
-							tileset.tileheight,
+							math.floor(width),
+							math.floor(height),
 							vec2(0, 0)
 						)
 					)
