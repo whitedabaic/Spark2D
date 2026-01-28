@@ -1,6 +1,8 @@
 #include "InputManager.h"
 #include <Logger/Logger.h>
 #include <SparkUtilities/SDL_Wrappers.h>
+#include <glm/glm.hpp>
+#include <Rendering/Core/Camera2D.h>
 
 namespace SPARK_CORE {
 	InputManager::InputManager()
@@ -144,7 +146,7 @@ namespace SPARK_CORE {
 		return instance;
 	}
 
-	void InputManager::CreateLuaInputBindings(sol::state& lua)
+	void InputManager::CreateLuaInputBindings(sol::state& lua, SPARK_CORE::ECS::Registry& registry)
 	{
         ReisterLuaKeyNames(lua);
         RegisterMouseBtnNames(lua);
@@ -152,6 +154,7 @@ namespace SPARK_CORE {
 
         auto& inputManager = GetInstance();
         auto& keyboard = inputManager.GetKeyboard();
+        auto& camera = registry.GetContext<std::shared_ptr<SPARK_RENDERING::Camera2D>>();
 
         lua.new_usertype<Keyboard>(
             "Keyboard",
@@ -169,7 +172,14 @@ namespace SPARK_CORE {
             "just_pressed", [&](int btn) { return mouse.IsBtnJustPressed(btn); },
             "just_released", [&](int btn) { return mouse.IsBtnJustReleased(btn); },
             "pressed", [&](int btn) { return mouse.IsBtnPressed(btn); },
-            "screen_position", [&]() { return mouse.GetMouseScreenPosition(); },
+            "screen_position", [&]() { 
+                auto [x, y] = mouse.GetMouseScreenPosition(); 
+                return glm::vec2{ x, y };
+            },
+            "world_position", [&]() {
+                auto [x, y] = mouse.GetMouseScreenPosition();
+                return camera->ScreenCoordsToWorld(glm::vec2{ x, y });
+            },
             "wheel_x", [&]() { return mouse.GetMouseWheelX(); },
             "wheel_y", [&]() { return mouse.GetMouseWheelY(); }
         );

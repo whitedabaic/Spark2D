@@ -159,7 +159,7 @@ namespace SPARK_CORE::Systems {
 	void ScriptingSystem::RegisterLuaBindings(sol::state& lua, SPARK_CORE::ECS::Registry& registry)
 	{
 		SPARK_CORE::Scripting::GLMBindings::CreateGLMBinds(lua);
-		SPARK_CORE::InputManager::CreateLuaInputBindings(lua);
+		SPARK_CORE::InputManager::CreateLuaInputBindings(lua, registry);
 		SPARK_RESOURCES::AssetManager::CreateLuaAssetManager(lua, registry);
 		SPARK_CORE::Scripting::SoundBinder::CreateSoundBind(lua, registry);
 		SPARK_CORE::Scripting::RendererBinder::CreateRenderingBind(lua, registry);

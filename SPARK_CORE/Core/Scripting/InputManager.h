@@ -4,6 +4,7 @@
 #include <Windowing/Inputs/Gamepad.h>
 #include <memory>
 #include <sol/sol.hpp>
+#include "../ECS/Registry.h"
 
 using namespace SPARK_WINDOWING::Inputs;
 
@@ -28,7 +29,7 @@ namespace SPARK_CORE {
 
 	public:
 		static InputManager& GetInstance();
-		static void CreateLuaInputBindings(sol::state& lua);
+		static void CreateLuaInputBindings(sol::state& lua, SPARK_CORE::ECS::Registry& registry);
 
 		inline Keyboard& GetKeyboard() { return *m_pKeyboard; }
 		inline Mouse& GetMouse() { return *m_pMouse; }

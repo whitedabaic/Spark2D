@@ -7,8 +7,8 @@ namespace SPARK_RENDERING {
 	}
 
 	Camera2D::Camera2D(int width, int height)
-		: m_Width{ width }, m_Height{ height }, m_Scale{ 1.f }, m_Position{ glm::vec2{0} },
-		m_CameraMatrix{ 1.f }, m_OrthoProjection{ 1.f }, m_bNeedsUpdate{ true }
+		: m_Width{ width }, m_Height{ height }, m_Scale{ 1.f }, m_Position{ 0.f }, m_ScreenOffset{ 0.f }
+		, m_CameraMatrix{ 1.f }, m_OrthoProjection{ 1.f }, m_bNeedsUpdate{ true }
 	{
 		// Init orthographic projection
 		m_OrthoProjection = glm::ortho(
@@ -35,5 +35,35 @@ namespace SPARK_RENDERING {
 		m_CameraMatrix *= glm::scale(glm::mat4{ 1.f }, scale);
 
 		m_bNeedsUpdate = false;
+	}
+	glm::vec2 Camera2D::ScreenCoordsToWorld(const glm::vec2& screenCoords)
+	{
+		glm::vec2 worldCoords{ screenCoords };
+
+		// Set the coords to the center of the screen
+		worldCoords -= m_ScreenOffset;
+
+		// Scale the coordinates
+		worldCoords /= m_Scale;
+
+		// Translate with the camera position
+		worldCoords += m_Position;
+
+		return worldCoords;
+	}
+	glm::vec2 Camera2D::WorldCoordsToScreen(const glm::vec2& worldCoords)
+	{
+		glm::vec2 screenCoords{ worldCoords };
+
+		// Set the coords to the center of the screen
+		screenCoords += m_ScreenOffset;
+
+		// Scale the coordinates
+		screenCoords *= m_Scale;
+
+		// Translate with the camera position
+		screenCoords -= m_Position;
+
+		return screenCoords;
 	}
 }
